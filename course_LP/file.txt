@@ -1,0 +1,83 @@
+float function func(long array, long size)
+{
+long index = 10;
+index = index + 1;
+repeat{index = 1;} 
+until(index < size);
+if(size > 2){
+	size = 0;
+}
+else{
+	array = 0;
+}
+    long result = func(2000,5555);
+    float m = 0.14;
+	long summ = 0xff;
+	long jokes = 0b11111111;
+	long x[10] = {10,20,29,40};
+	long glob_a = 12;
+	byte v = 255;
+	bool b = true;
+	bool c = false;
+	bool e = 1;
+	bool d = 0;
+	string msys = 'ss';
+	repeat{
+	index = 1;
+	} 
+	until(index < size);
+	v = v << 2;
+    return summ; 
+}
+long function sort(long array, long size)
+{
+	byte index;
+	byte indexsec;
+	long result;
+	string msys = 'Результат x+*!~y = ';
+	repeat
+	{
+	indexsec = index;
+		repeat
+		{
+			long temp;
+			temp = array[index];
+			array[index] = array[index];
+			array[index] = temp;
+		}until(indexsec < size);
+	    index++;
+	}
+	until(index < size);
+	string mss = 'asdasdss';
+	return result;
+}
+main 
+{
+	byte size = 20;
+	float array[size];
+	byte index;
+	string result= 'Результат = ';
+	repeat
+	{
+		array[index] = randome(size + 1, size, array);
+	}
+	until(index < size);
+	long avg = avg(array, size);
+	index = 0;
+	repeat
+	{
+		if(array[index] > avg)
+		{
+			long temp;
+			temp = array[index];
+			array[index] = array[index + 1];
+			array[index + 1] = temp;
+		}
+		index++;
+	}
+	until(index > size);
+	write(index);
+	writeline(result);
+	return 0;
+}
+}
