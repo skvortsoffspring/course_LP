@@ -39,6 +39,6 @@ namespace  GM
 	
 	char token_rekognizer(char* string, IT::Entry*);								// returned token
 	void dataProcesing(unsigned char*, std::fstream*, LT::LexTable*, IT::IdTable*);	// data processing all expressions
-	void IdentificatorCreate(IT::IdTable*, Data&, std::fstream*);									// add identifier
+	void IdentificatorCreate(IT::IdTable*,LT::LexTable*, Data&, std::fstream*);									// add identifier
 	bool alphaCirillicDigit(char);													// checked symbol (latin, cirilic or digit)
 }

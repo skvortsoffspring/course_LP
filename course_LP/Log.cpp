@@ -36,7 +36,7 @@ namespace Log
 			wcstombs(temp, *ptrC, PARM_MAX_SIZE);
 			*(log.stream) << temp;
 		}
-		*(log.stream) << IN_CODE_ENDL;
+		*(log.stream) <<ENDL;
 	}
 
 	void WriteLog(LOG log)
@@ -48,13 +48,13 @@ namespace Log
 		timeinfo = localtime(&rawtime);
 		strftime(buffer, 48, "%d-%m-%Y --%A-- %H:%M:%S ", timeinfo);
 
-		*(log.stream) << "------------ Протокол -------------" << IN_CODE_ENDL << buffer << IN_CODE_ENDL << IN_CODE_ENDL;
+		*(log.stream) << "------------ Протокол -------------" <<ENDL << buffer <<ENDL <<ENDL;
 		
 	}
 
 	void WriteParm(LOG structlog, Parm::PARM parm)
 	{
-		*(structlog.stream) << "------------ Параметры -------------" << IN_CODE_ENDL;
+		*(structlog.stream) << "------------ Параметры -------------" <<ENDL;
 
 		//----------------------- wchar_t to char for in -----------------------
 		char* in = new char[wcslen(parm.in) + 1];
@@ -84,9 +84,9 @@ namespace Log
 		parm_log[wcslen(PARM_LOG)] = STR_ENDL;
 
 		//----------------------- out file -----------------------
-		*(structlog.stream) << parm_in	<< TAB << in  << IN_CODE_ENDL;
-		*(structlog.stream) << parm_out << TAB << out << IN_CODE_ENDL;
-		*(structlog.stream) << parm_log << TAB << log << IN_CODE_ENDL << IN_CODE_ENDL;
+		*(structlog.stream) << parm_in	<< TAB << in  <<ENDL;
+		*(structlog.stream) << parm_out << TAB << out <<ENDL;
+		*(structlog.stream) << parm_log << TAB << log <<ENDL <<ENDL;
 
 
 		delete[] in;
@@ -97,17 +97,17 @@ namespace Log
 	void WriteIn(LOG log, In::IN in)
 	{
 		
-		*(log.stream) << "--------- Исходные данные ---------" << IN_CODE_ENDL;
+		*(log.stream) << "--------- Исходные данные ---------" <<ENDL;
 		log.stream->width(32);
 		log.stream->setf(std::ios::left);
 		*(log.stream) << "Количество символов:";
-		*(log.stream) << in.size << IN_CODE_ENDL;
+		*(log.stream) << in.size <<ENDL;
 		log.stream->width(32);
 		*(log.stream) << "Проигнорировано символов:"; 
-		*(log.stream) << in.ignor << IN_CODE_ENDL;
+		*(log.stream) << in.ignor <<ENDL;
 		log.stream->width(32);
 		*(log.stream) << "Количество строк:";
-		*(log.stream) << in.lines << IN_CODE_ENDL << IN_CODE_ENDL;
+		*(log.stream) << in.lines <<ENDL <<ENDL;
 	}
 
 	void Close(LOG log)
@@ -119,14 +119,14 @@ namespace Log
 	void WriteError(LOG log, Error::ERROR error)
 	{
 		if (log.stream) {
-			*(log.stream) << "Тест содержит ошибки!" << IN_CODE_ENDL
-				<< "Ошибка: " << error.id << SPACE << error.message << IN_CODE_ENDL;
+			*(log.stream) << "Тест содержит ошибки!" <<ENDL
+				<< "Ошибка: " << error.id << SPACE << error.message <<ENDL;
 			if(error.inext.line != -1)
-				*(log.stream) << "Строка:" << SPACE << error.inext.line << IN_CODE_ENDL;
+				*(log.stream) << "Строка:" << SPACE << error.inext.line <<ENDL;
 			if(error.inext.col != -1)
 				*(log.stream) << "Позиция:" << SPACE << error.inext.col;
 		}
 		else
-			std::cout << "Ошибка: " << error.id << SPACE << error.message << IN_CODE_ENDL;
+			std::cout << "Ошибка: " << error.id << SPACE << error.message <<ENDL;
 	}
 }

@@ -4,7 +4,7 @@
 
 //#include "../generator_graphs/graphs.h"
 
-
+int ID = TI_NULLIDX;
 namespace GM
 {
 	void dataProcesing(unsigned char* text, std::fstream* stream, LT::LexTable* lextable, IT::IdTable* idtable)
@@ -75,7 +75,12 @@ namespace GM
 					memset(data.prefix, 0, PREFIX_SIZE);
 				break;
 			case '[':
-				if(idtable->table[idtable->current_size - 1].iddatatype && idtable->table[idtable->current_size - 1].idtype == IT::V)
+				if
+					(
+					idtable->table[idtable->current_size - 1].iddatatype &&
+					idtable->table[idtable->current_size - 1].idtype == IT::V &&
+					idtable->table[idtable->current_size - 1].idxfirstLE == lextable->size - 1
+					)
 					idtable->table[idtable->current_size-1].idtype = IT::A;
 				break;
 			
@@ -97,10 +102,11 @@ namespace GM
 					data.negativeValue = true;
 
  				data.token = TOKEN;												// распознователь ключевых слов
+
 				data.count = lextable->size;
 				if (!data.token) 
 				{
-					std::cout << "Error token not recognized" << std::endl;
+					
 					throw ERROR_THROW_LINE(128, data.count_lines);				// ни один автомат не сработал
 				}
 
@@ -121,7 +127,16 @@ namespace GM
 				case LEX_LITERAL:
 					if (data.visibility_in_parametres)
 						idtable->table[idtable->current_size].idtype = IT::P;
-					LiteralCreate(*idtable, data.string, data.count_lines, data.negativeValue, data.visibility_in_parametres);
+					ID = LiteralCreate(*idtable,*lextable, data.string, data.count_lines, data.negativeValue, data.visibility_in_parametres);
+					if (ID == TI_NULLIDX) {
+						entryLT.idxTI = idtable->current_size;
+						idtable->table[idtable->current_size].idxfirstLE = lextable->size;
+						IT::Add(*idtable, ENTRY);
+					}
+					else {
+						entryLT.idxTI = ID;
+						idtable->table[idtable->current_size] = IT::Reset();
+					}
 					break;
 				case EXPRESSIONS:
 				case LOGICALS:
@@ -141,19 +156,21 @@ namespace GM
 						if (!(bool)ENTRY.iddatatype)
 							throw ERROR_THROW_LINE(127, data.count_lines);			// не указан тип для функции
 
-					IdentificatorCreate(idtable, data, stream);
+					IdentificatorCreate(idtable,lextable, data, stream);
 					if ((bool)ENTRY.iddatatype || data.token == LEX_MAIN)
 					{
-						entryLT.idxTI =lextable->size;
+						entryLT.idxTI = idtable->current_size;
 					}
 					else
-						entryLT.idxTI = ENTRY.idxfirstLE;
-
-					IT::Add(*idtable, ENTRY);
+						entryLT.idxTI = ID;
+					if (ID == TI_NULLIDX)
+						IT::Add(*idtable, ENTRY);
+					else
+						idtable->table[idtable->current_size] = IT::Reset();
 					break;
 				}
-
-				LT::Add(lextable, entryLT);
+				
+					LT::Add(lextable, entryLT);
 
 				start = end;
 				delete[] data.string;
@@ -177,13 +194,13 @@ namespace GM
 		}
 	}
 
-	void IdentificatorCreate(IT::IdTable* idtable, Data& data, std::fstream* stream)
+	void IdentificatorCreate(IT::IdTable* idtable,LT::LexTable* lextable, Data& data, std::fstream* stream)
 	{
 
 		switch (ENTRY.idtype) {
 		case IT::IDTYPE::F:
 		{
-			IT::IsId(*idtable, data.string, data.prefix, data.count_lines,&data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
+			ID = IT::IsId(*idtable,*lextable, data.string, data.prefix, data.count_lines,&data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
 			if (strlen(data.string) > PREFIX_SIZE)
 				*stream << "Идентификатор функции (" << data.string << ") усечен!\n";
 			
@@ -223,17 +240,17 @@ namespace GM
 					if(!*data.prefix)
 						throw ERROR_THROW_LINE(137, data.count_lines)
 				}
-				IT::IsId(*idtable, data.string, data.prefix, data.count_lines,data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
-				strncpy_s(ENTRY.prefix, data.prefix, PREFIX_SIZE);
+				ID = IT::IsId(*idtable, *lextable, data.string, data.prefix, data.count_lines, &data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
 				strncpy_s(ENTRY.id, data.string, ID_MAXSIZE);
+				strncpy_s(ENTRY.prefix, data.prefix, PREFIX_SIZE);
 				ENTRY.idxfirstLE = data.count;
 			}
 			else
 			{
 				strncpy_s(ENTRY.id, data.string, ID_MAXSIZE);
 				strncpy_s(ENTRY.prefix, data.prefix, PREFIX_SIZE);
-				ENTRY.idxfirstLE = IT::IsId(*idtable, data.string, data.prefix, data.count_lines,data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
-				if(ENTRY.idxfirstLE == TI_NULLIDX)
+				ID = IT::IsId(*idtable, *lextable, data.string, data.prefix, data.count_lines, &data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
+				if(ID == TI_NULLIDX)
 					throw ERROR_THROW_LINE(133, data.count_lines)
 			}
 			break;
@@ -631,8 +648,8 @@ namespace GM
 				FST::NODE(1, FST::RELATION('e', 4)),
 				FST::NODE());
 			if (result = execute(graph_byte)) {
-				entry->iddatatype = IT::IDDATATYPE::BYTE;
-				return LEX_BYTE;
+				entry->iddatatype = IT::IDDATATYPE::CHAR;
+				return LEX_CHAR;
 				break;
 			}
 			FST::FST graph_bool(string, 5,

@@ -5,9 +5,10 @@
 #define	LT_TI_NULLXDX		0xffffffff	// not link table ID			
 #define LEX_BOOL			't'			// type data bool
 #define	LEX_LONG			't'			// type data long
-#define	LEX_BYTE			't'			// type data byte
+#define	LEX_CHAR			't'			// type data byte
 #define LEX_FLOAT			't'			// float data type
 #define	LEX_STRING			't'			// type data string
+#define LEX_TYPE			't'			// all types data
 #define	LEX_ID				'i'			// лексема для идентификатора
 #define	LEX_LITERAL			'l'			// лексема для литерала
 #define	LEX_FUNCTION		'f'			// лексема для function

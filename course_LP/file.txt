@@ -1,17 +1,22 @@
-float function func(long array, long size)
+float function sorting(float array, long size)
 {
-long index = 10;
-index = index + 1;
+byte gerty = 18;
+long index = 10 1 + 9 * 20 / gerty +;
+long k = 10;
+index = index 10 -;
 repeat{index = 1;} 
 until(index < size);
-if(size > 2){
+if(size > 2)
+{
 	size = 0;
 }
-else{
+else
+{
 	array = 0;
 }
-    long result = func(2000,5555);
     float m = 0.14;
+	float pi = 3.14;
+	float ideal = 1.61;
 	long summ = 0xff;
 	long jokes = 0b11111111;
 	long x[10] = {10,20,29,40};
@@ -62,7 +67,7 @@ main
 		array[index] = randome(size + 1, size, array);
 	}
 	until(index < size);
-	long avg = avg(array, size);
+	long avg = sort(array, size);
 	index = 0;
 	repeat
 	{

@@ -13,8 +13,8 @@
 
 namespace IT											// таблица идентификатов
 {
-	enum IDDATATYPE { NUL, LONG, STR, BYTE, FLOAT, BOOL };// типы данных идентификаторов: integer, string, byte
-	enum IDTYPE		{ N, V, F, P, L, S, E , A};			// типы идентификаторов: переменна€, функци€, параметр, лексема, внешн€€ функци€, массив
+	enum IDDATATYPE { NUL, LONG, STR, CHAR, FLOAT, BOOL };// типы данных идентификаторов: integer, string, byte
+	enum IDTYPE		{ N, V, F, P, L, S, E , A};			// типы идентификаторов: переменна€, функци€, параметр, литерал, внешн€€ функци€, массив
 	enum CALCULUS	{ NC, DEC, OCT, HEX, BIN };			// системы исчислени€
 	
 	struct Entry										// строка таблицы идентификаторов
@@ -66,12 +66,13 @@ namespace IT											// таблица идентификатов
 	void Add(IdTable&, Entry);								// добавить в строку идентификаторов
 	Entry GetEntry(IdTable&, int n);						// получить строку таблицы идентификаторов
 	Entry AddLiteral(Entry&);								// 
-	int IsId(IdTable&, char[], char[], int, bool, IDDATATYPE,IDTYPE);					// возврат : возврат строки (если есть), TI_NULLIDX(если нет)
+	int IsId(IdTable&,LT::LexTable&, char[], char[], int, bool, IDDATATYPE,IDTYPE);					// возврат : возврат строки (если есть), TI_NULLIDX(если нет)
 	int IsLiteral(IdTable&, char*);							// возрат IT_TI_NULLIDX если есть уже идентичный идентификатор
 	int IsLiteral(IdTable&, unsigned int);					// возрат IT_TI_NULLIDX если есть уже идентичный идентификатор
 	int IsLiteral(IdTable&, unsigned char);					// возрат IT_TI_NULLIDX если есть уже идентичный идентификатор
 	int IsLiteral(IdTable&, float);							// возрат IT_TI_NULLIDX если есть уже идентичный идентификатор
-	void LiteralCreate(IdTable&, char*, int, bool&,bool);	// добавить литерал в таблицу
+	int LiteralCreate(IdTable,LT::LexTable, char*, int, bool&,bool);	// добавить литерал в таблицу
 	void PrintIdTable(const wchar_t* in, IdTable&);			// печать таблицы идентификаторов
 	void Delete(IdTable&);									// удалить таблицу лексем (освободить место)
+	Entry Reset();
 }

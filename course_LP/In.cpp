@@ -28,10 +28,10 @@ namespace In
 			if (fin.eof())
 				break;
 
-			if (symbol == IN_CODE_ENDL)
+			if (symbol ==ENDL)
 			{
 				in.lines++;
-				in.text[positionArr] = IN_CODE_ENDL;
+				in.text[positionArr] =ENDL;
 				positionErr = 0;
 			}
 

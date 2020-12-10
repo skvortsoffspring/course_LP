@@ -131,6 +131,7 @@ int _tmain(int argc, _TCHAR* argv[])
 	}
 	catch (Error::ERROR e)
 	{
+		std::cout << "Error, please check log file" << std::endl;
 		Log::WriteError(log, e);
 	};
 

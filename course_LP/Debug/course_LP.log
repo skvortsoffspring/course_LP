@@ -1,14 +1,4 @@
-﻿  course_project.cpp
-  DP.cpp
-  Error.cpp
-  GTA.cpp
-  In.cpp
-  IT.cpp
-C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\IT.cpp(198,7): warning C4804: >: небезопасное использование типа "bool" в операции
-C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\IT.cpp(198,47): warning C4804: <: небезопасное использование типа "bool" в операции
-  Log.cpp
-  LT.cpp
-  Parm.cpp
-  PN.cpp
-  Создание кода...
+﻿  GTA.cpp
+C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\GTA.cpp(217,11): warning C4101: buffer: неиспользованная локальная переменная
+C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\GTA.cpp(246,28): warning C4018: <: несоответствие типов со знаком и без знака
   course_LP.vcxproj -> C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\Debug\course_LP.exe

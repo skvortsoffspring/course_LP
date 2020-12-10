@@ -2,7 +2,7 @@
 #pragma once		
 
 #define IN_MAX_LEN_TEXT	1024*1024	// максимальный размер исходного кода =	1MB									
-#define IN_CODE_ENDL '\n'			// символ переноса
+#define ENDL '\n'			// символ переноса
 #define STR_ENDL '\0'               // конец строки
 #define TAB '\t'
 #define SPACE ' '

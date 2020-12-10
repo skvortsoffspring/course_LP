@@ -17,10 +17,10 @@ namespace IT
 
 		if (idtable.current_size < idtable.maxsize)
 		{
-			if(entry.idtype != L)
+			if(entry.idtype == V)
 				if (entry.iddatatype == IT::IDDATATYPE::LONG)
 					idtable.table[idtable.current_size].value.vint = TI_LONG_DEFAULT;
-				else if (entry.iddatatype == IT::IDDATATYPE::BYTE)
+				else if (entry.iddatatype == IT::IDDATATYPE::CHAR)
 				{
 					idtable.table[idtable.current_size].value.vchar = 0x00;
 				}
@@ -36,7 +36,7 @@ namespace IT
 				{
 					idtable.table[idtable.current_size].value.vbool = TI_DEFAULT;
 				}
-			
+
 			idtable.current_size++;
 		}
 		else
@@ -49,32 +49,32 @@ namespace IT
 			return idtable.table[n];
 	}
 
-	int IsId(IdTable& idtable, char* id,char* prefix, int line,bool visibility,IDDATATYPE dtype, IDTYPE ttype) {
+	int IsId(IdTable& idtable,LT::LexTable& lextable, char* id,char* prefix, int line,bool visibility,IDDATATYPE dtype, IDTYPE ttype) {
 		for (int i = 0; i < idtable.current_size; i++)
 		{
 			if (!strcmp(idtable.table[i].id, id) && idtable.table[i].idtype == F) {
 				idtable.table[idtable.current_size].idtype = F;
 				idtable.table[idtable.current_size].iddatatype = idtable.table[i].iddatatype;
 				visibility = true;
-				return idtable.table[i].idxfirstLE;
+				return lextable.table[idtable.table[i].idxfirstLE].idxTI;
 			}
 			
 			if (!strcmp(idtable.table[i].id, id) && !strcmp(idtable.table[i].prefix, prefix))
 			{
 				if (idtable.table[i].idtype == F && idtable.table[i].idtype == ttype)
 					throw ERROR_THROW_LINE(125, line);
-				if (idtable.table[i].idtype == V &&  idtable.table[i].idtype == ttype)
-					throw ERROR_THROW_LINE(126, line);
-				if (idtable.table[i].idtype == P && idtable.table[idtable.current_size].idtype == V)
-					throw ERROR_THROW_LINE(126, line);
+				//if (idtable.table[i].idtype == V &&  idtable.table[i].idtype == ttype)
+				//	throw ERROR_THROW_LINE(126, line);
+				//if (idtable.table[i].idtype == P && idtable.table[idtable.current_size].idtype == V)
+				//	throw ERROR_THROW_LINE(126, line);
 				idtable.table[idtable.current_size].idtype = idtable.table[i].idtype;
-				return idtable.table[i].idxfirstLE;
+				return lextable.table[idtable.table[i].idxfirstLE].idxTI;
 
 			}
 			if (!strncmp(idtable.table[i].id, id, 10) && dtype)
 			{
 				if (idtable.table[i].idtype == IT::F)
-					return idtable.table[i].idxfirstLE;
+					return lextable.table[idtable.table[i].idxfirstLE].idxTI;
 			}
 		}
 		return LT_TI_NULLXDX;
@@ -83,7 +83,7 @@ namespace IT
 	int IsLiteral(IdTable& idtable, char* str) {
 		for (int i = 0; i < idtable.current_size; i++)
 		{
-			if (!strcmp(idtable.table[i].value.vstr->str, str))
+			if (!strcmp(idtable.table[i].value.vstr->str, str) && idtable.table[i].idtype == L)
 				return i;
 		}
 		return LT_TI_NULLXDX;
@@ -91,7 +91,7 @@ namespace IT
 	int IsLiteral(IdTable& idtable,unsigned int vint) {
 		for (int i = 0; i < idtable.current_size; i++)
 		{
-			if (idtable.table[i].value.vint == vint)
+			if (idtable.table[i].value.vint == vint && idtable.table[i].idtype == L)
 				return i;
 		}
 		return LT_TI_NULLXDX;
@@ -100,7 +100,7 @@ namespace IT
 	{
 		for (int i = 0; i < idtable.current_size; i++)
 		{
-			if (idtable.table[i].value.vint == vchar)
+			if (idtable.table[i].value.vint == vchar && idtable.table[i].idtype == L)
 				return i;
 		}
 		return LT_TI_NULLXDX;
@@ -108,16 +108,16 @@ namespace IT
 	int IsLiteral(IdTable& idtable, float vfloat) {
 		for (int i = 0; i < idtable.current_size; i++)
 		{
-			if (idtable.table[i].value.vint == vfloat)
+			if (idtable.table[i].value.vint == vfloat && idtable.table[i].idtype == L)
 				return i;
 		}
 		return LT_TI_NULLXDX;
 	}
 
-	void LiteralCreate(IdTable& idtable, char* string, int countLine,bool& negativeValue, bool parametres)
+	int LiteralCreate(IdTable idtable,LT::LexTable lextable, char* string, int countLine,bool& negativeValue, bool parametres)
 	{	
 		idtable.table[idtable.current_size].idtype = L;
-		int ID;
+		int ID = TI_NULLIDX;
 		long long value;
 		switch (idtable.table[idtable.current_size].idcalculus) {
 
@@ -141,7 +141,7 @@ namespace IT
 		switch (idtable.table[idtable.current_size - 1].iddatatype)				// check data type for type variable
 		{
 
-			case BYTE:
+			case CHAR:
 			{
 				if (idtable.table[idtable.current_size].iddatatype != LONG && parametres)
 					throw ERROR_THROW_LINE(132, countLine);
@@ -174,7 +174,7 @@ namespace IT
 		switch (idtable.table[idtable.current_size].iddatatype)					// add literal for table id
 		{
 
-		case BYTE:
+		case CHAR:
 		{
 			if (int(value) > UCHAR_MAX || int(value) < NULL)	// limit char
 				throw ERROR_THROW_LINE(129, countLine);
@@ -182,14 +182,14 @@ namespace IT
 			ID = IsLiteral(idtable, (unsigned int)value);
 
 			if (ID == LT_TI_NULLXDX) {
-				idtable.table[idtable.current_size].iddatatype = BYTE;
+				idtable.table[idtable.current_size].iddatatype = CHAR;
 				idtable.table[idtable.current_size].value.vchar = (unsigned char)value;
 			}
 			else
 			{
 				idtable.table[idtable.current_size].idxfirstLE = ID;
 			}
-			IT::Add(idtable, idtable.table[idtable.current_size]);
+			
 
 			break;
 		}
@@ -208,7 +208,7 @@ namespace IT
 			{
 				idtable.table[idtable.current_size].idxfirstLE = ID;
 			}
-			IT::Add(idtable, idtable.table[idtable.current_size]);
+			
 
 			break;
 		}
@@ -229,7 +229,7 @@ namespace IT
 			{
 				idtable.table[idtable.current_size].idxfirstLE = ID;
 			}
-			IT::Add(idtable, idtable.table[idtable.current_size]);
+			
 
 			break;
 		}
@@ -253,7 +253,7 @@ namespace IT
 			{
 				idtable.table[idtable.current_size].idxfirstLE = ID;
 			}
-			IT::Add(idtable, idtable.table[idtable.current_size]);
+			
 
 			break;
 		}
@@ -271,7 +271,7 @@ namespace IT
 				idtable.table[idtable.current_size].iddatatype = IT::IDDATATYPE::STR;
 				strcpy_s(idtable.table[idtable.current_size].value.vstr->str, temp);
 				idtable.table[idtable.current_size].value.vstr->len = (char)(size);
-				IT::Add(idtable, idtable.table[idtable.current_size]);
+				
 			}
 			else
 			{
@@ -280,10 +280,7 @@ namespace IT
 			break;
 		}
 		}
-		
-		
-		
-		
+		 return ID;
 	}
 
 	void PrintIdTable(const wchar_t* out, IdTable& idtable)
@@ -298,7 +295,8 @@ namespace IT
 		timeinfo = localtime(&rawtime);
 		strftime(buffer, 48, "%d-%m-%Y --%A-- %H:%M:%S ", timeinfo);
 
-		fout << "ID table, modified time: " << buffer << IN_CODE_ENDL << IN_CODE_ENDL;
+		fout << "ID table, modified time: " << buffer <<ENDL <<ENDL;
+#pragma region print_variables
 
 		fout.setf(std::ios::left);
 		fout.width(lengthRow); fout << "visible";
@@ -306,7 +304,7 @@ namespace IT
 		fout.width(lengthRow); fout << "type";
 		fout.width(lengthRow); fout << "value int";
 		fout.width(lengthRow); fout << "value str";
-		fout.width(lengthRow); fout << "idxfirstLE" << IN_CODE_ENDL;
+		fout.width(lengthRow); fout << "idxfirstLE" <<ENDL;
 
 		for (int i = 0; i < idtable.current_size; i++)
 		{
@@ -316,7 +314,7 @@ namespace IT
 				fout.width(lengthRow);
 				fout << idtable.table[i].id;
 
-				if (idtable.table[i].iddatatype == BYTE) {
+				if (idtable.table[i].iddatatype == CHAR) {
 					fout.width(lengthRow); fout << "byte";
 					if (!idtable.table[i].value.vchar) {
 						fout.width(lengthRow); fout << "0x00";
@@ -358,16 +356,19 @@ namespace IT
 				{
 					fout << "TI[" << idtable.table[i].idxfirstLE << "]";
 				}
-				fout << IN_CODE_ENDL;
+				fout <<ENDL;
 			}
 			
 		}
-		fout << IN_CODE_ENDL;
+#pragma endregion
+#pragma region print_functions
+
+		fout <<ENDL;
 		fout.setf(std::ios::left);
 		fout.width(lengthRow); fout << "visible";
 		fout.width(lengthRow); fout << "function";
 		fout.width(lengthRow);	fout << "type";
-		fout.width(lengthRow);	fout << "idfirstLE" << IN_CODE_ENDL;
+		fout.width(lengthRow);	fout << "idfirstLE" <<ENDL;
 
 		for (int i = 0; i < idtable.current_size; i++)
 		{
@@ -382,7 +383,7 @@ namespace IT
 				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::STR) {
 					fout.width(lengthRow); fout << "string ";
 				}				
-				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::BYTE) {
+				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::CHAR) {
 					fout.width(lengthRow); fout << "byte";
 				}
 				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::FLOAT) {
@@ -393,15 +394,15 @@ namespace IT
 				}
 				fout.width(lengthRow); fout << idtable.table[i].idxfirstLE;
 
-				fout << IN_CODE_ENDL;
+				fout <<ENDL;
 			}
 
-		}fout << IN_CODE_ENDL;
+		}fout <<ENDL;
 		fout.setf(std::ios::left);
 		fout.width(lengthRow); fout << "visible";
 		fout.width(lengthRow); fout << "ext function";
 		fout.width(lengthRow);	fout << "type"; 
-		fout.width(lengthRow);	fout << "idxFirstLE" << IN_CODE_ENDL;
+		fout.width(lengthRow);	fout << "idxFirstLE" <<ENDL;
 
 		for (int i = 0; i < idtable.current_size; i++)
 		{
@@ -416,7 +417,7 @@ namespace IT
 				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::STR) {
 					fout.width(lengthRow); fout << "string ";
 				}				
-				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::BYTE) {
+				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::CHAR) {
 					fout.width(lengthRow); fout << "byte";
 				}
 				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::FLOAT) {
@@ -427,20 +428,19 @@ namespace IT
 				}
 				fout.width(lengthRow); fout << idtable.table[i].idxfirstLE;
 
-				fout << IN_CODE_ENDL;
+				fout <<ENDL;
 			}
 
 		}
-		/// <summary>
-		/// </summary>
-		/// <param name="out"></param>
-		/// <param name="idtable"></param>
-		fout << IN_CODE_ENDL;
+#pragma endregion
+#pragma region print_array
+
+		fout <<ENDL;
 		fout.setf(std::ios::left);
 		fout.width(lengthRow); fout << "visible";
 		fout.width(lengthRow); fout << "array";
 	fout.width(lengthRow);	fout << "type"; 
-		fout.width(lengthRow);	fout << "idxFirstLE" << IN_CODE_ENDL;
+		fout.width(lengthRow);	fout << "idxFirstLE" <<ENDL;
 
 		for (int i = 0; i < idtable.current_size; i++)
 		{
@@ -455,7 +455,7 @@ namespace IT
 				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::STR) {
 					fout.width(lengthRow); fout << "string ";
 				}
-				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::BYTE) {
+				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::CHAR) {
 					fout.width(lengthRow); fout << "byte";
 				}
 				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::FLOAT) {
@@ -465,21 +465,21 @@ namespace IT
 					fout.width(lengthRow); fout << "bool";
 				}
 				fout.width(lengthRow); fout << idtable.table[i].idxfirstLE;
-				fout << IN_CODE_ENDL;
+				fout <<ENDL;
 			}
 			
 		}
-		/// <summary>
-		/// 
-		/// </summary>
-		/// <param name="out"></param>
-		/// <param name="idtable"></param>
-		fout << IN_CODE_ENDL;
+#pragma endregion
+#pragma region print_parametres
+
+
+
+		fout <<ENDL;
 		fout.setf(std::ios::left);
 		fout.width(lengthRow); fout << "visible";
 		fout.width(lengthRow); fout << "parameter";
 		fout.width(lengthRow); fout << "type";
-		fout.width(lengthRow);	fout << "idxfirstle" << IN_CODE_ENDL;
+		fout.width(lengthRow);	fout << "idxfirstle" <<ENDL;
 
 		for (int i = 0; i < idtable.current_size; i++)
 		{
@@ -494,7 +494,7 @@ namespace IT
 					fout.width(lengthRow); 
 					fout << "long ";
 				}
-				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::BYTE) 
+				else if (idtable.table[i].iddatatype == IT::IDDATATYPE::CHAR) 
 				{
 					fout.width(lengthRow); 
 					fout << "byte";
@@ -529,17 +529,21 @@ namespace IT
 					fout << "TI[" << idtable.table[i].idxfirstLE << "]";
 				}
 				fout.width(lengthRow); fout << idtable.table[i].idxfirstLE;
-				fout << IN_CODE_ENDL;
+				fout <<ENDL;
 			}
 
 		}
+#pragma endregion
+#pragma region print_literal
 
-		fout << IN_CODE_ENDL;
+
+
+		fout <<ENDL;
 		fout.setf(std::ios::left);
 		fout.width(lengthRow); fout << "type";
 		fout.width(lengthRow);	fout << "size(string)";
 		fout.width(lengthRow);	fout << "idxfirstle";
-		fout << "value" << IN_CODE_ENDL;
+		fout << "value" <<ENDL;
 
 		for (int i = 0; i < idtable.current_size; i++)
 		{
@@ -550,7 +554,7 @@ namespace IT
 						fout.width(lengthRow); fout << "long";
 						fout.width(lengthRow); fout << "------";
 						fout.width(lengthRow); fout << idtable.table[i].idxfirstLE;
-						fout.width(lengthRow); fout << idtable.table[i].value.vfloat;
+						fout.width(lengthRow); fout << idtable.table[i].value.vint;
 						break;
 					}
 					case FLOAT:
@@ -564,28 +568,29 @@ namespace IT
 					case STR:
 					{
 						fout.width(lengthRow); fout << "string ";
-						if (idtable.table[i].idxfirstLE == TI_NULLIDX)
-						{
-							fout.width(lengthRow); fout << (int)idtable.table[i].value.vstr->len;
-							fout.width(lengthRow); fout << i;
-							fout.width(lengthRow); fout << idtable.table[i].value.vstr->str;
-						}
-						else
-						{
-							fout << "TI[" << idtable.table[i].idxfirstLE << "]";
-						}
+						fout.width(lengthRow); fout << (int)idtable.table[i].value.vstr->len;
+						fout.width(lengthRow); fout << idtable.table[i].idxfirstLE;
+						fout.width(lengthRow); fout << idtable.table[i].value.vstr->str;
 						break;
 					}
 				}
-				fout << IN_CODE_ENDL;
+				fout <<ENDL;
 			}
 
 		}
+		fout << "Всего идентификаторов: ";
+		fout.width(lengthRow); fout << idtable.current_size;
 		fout.close();
+#pragma endregion
+		
 	}
 
 	void Delete(IdTable& idtable) {
 		delete[] idtable.table;
 		idtable.table = nullptr;
+	}
+	Entry Reset() {
+
+		return Entry();
 	}
 }

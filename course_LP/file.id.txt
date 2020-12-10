@@ -1,143 +1,67 @@
-ID table, modified time: 08-12-2020 --вторник-- 19:04:22 
+ID table, modified time: 10-12-2020 --четверг-- 23:51:49 
 
 visible             variable            type                value int           value str           idxfirstLE          
-func                index               long                0                   -                    12
-func                index                                                                            TI[12]
-func                index                                                                            TI[12]
-func                index                                                                            TI[12]
-func                index                                                                            TI[12]
-func                result              long                0                   -                    56
-func                m                   float               0                   -                    66
-func                summ                long                0                   -                    71
-func                jokes               long                0                   -                    76
-func                glob_a              long                0                   -                    97
-func                v                   byte                0x00                -                    102
-func                b                   bool                0                   -                    107
-func                c                   bool                0                   -                    112
-func                e                   bool                0                   -                    117
-func                d                   bool                0                   -                    122
-func                msys                string              -                   0                    127
-func                index                                                                            TI[12]
-func                index                                                                            TI[12]
-func                v                                                                                TI[102]
-func                v                                                                                TI[102]
-func                summ                                                                             TI[71]
-sort                index               byte                0x00                -                    167
-sort                indexsec            byte                0x00                -                    170
-sort                result              long                0                   -                    173
-sort                msys                string              -                   0                    176
-sort                indexsec                                                                         TI[170]
-sort                index                                                                            TI[167]
-sort                temp                long                0                   -                    189
-sort                temp                                                                             TI[189]
-sort                index                                                                            TI[167]
-sort                index                                                                            TI[167]
-sort                index                                                                            TI[167]
-sort                index                                                                            TI[167]
-sort                temp                                                                             TI[189]
-sort                indexsec                                                                         TI[170]
-sort                index                                                                            TI[167]
-sort                index                                                                            TI[167]
-sort                mss                 string              -                   0                    235
-sort                result                                                                           TI[173]
-main                size                byte                0x00                -                    246
-main                size                                                                             TI[246]
-main                index               byte                0x00                -                    257
-main                result              string              -                   0                    260
-main                index                                                                            TI[257]
-main                size                                                                             TI[246]
-main                size                                                                             TI[246]
-main                index                                                                            TI[257]
-main                size                                                                             TI[246]
-main                avg                 long                0                   -                    291
-main                avg                                                                              TI[291]
-main                size                                                                             TI[246]
-main                index                                                                            TI[257]
-main                index                                                                            TI[257]
-main                avg                                                                              TI[291]
-main                temp                long                0                   -                    317
-main                temp                                                                             TI[317]
-main                index                                                                            TI[257]
-main                index                                                                            TI[257]
-main                index                                                                            TI[257]
-main                index                                                                            TI[257]
-main                temp                                                                             TI[317]
-main                index                                                                            TI[257]
-main                index                                                                            TI[257]
-main                size                                                                             TI[246]
+sorting             gerty               byte                0x00                -                    12
+sorting             index               long                0                   -                    17
+sorting             k                   long                0                   -                    30
+sorting             m                   float               0                   -                    74
+sorting             pi                  float               0                   -                    79
+sorting             ideal               float               0                   -                    84
+sorting             summ                long                0                   -                    89
+sorting             jokes               long                0                   -                    94
+sorting             glob_a              long                0                   -                    115
+sorting             v                   byte                0x00                -                    120
+sorting             b                   bool                0                   -                    125
+sorting             c                   bool                0                   -                    130
+sorting             e                   bool                0                   -                    135
+sorting             d                   bool                0                   -                    140
+sorting             msys                string              -                   0                    145
+sort                index               byte                0x00                -                    185
+sort                indexsec            byte                0x00                -                    188
+sort                result              long                0                   -                    191
+sort                msys                string              -                   0                    194
+sort                temp                long                0                   -                    207
+sort                mss                 string              -                   0                    253
+main                size                byte                0x00                -                    264
+main                index               byte                0x00                -                    275
+main                result              string              -                   0                    278
+main                avg                 long                0                   -                    309
+main                temp                long                0                   -                    335
 
 visible             function            type                idfirstLE           
-                    func                float               2                   
-func                func                float               2                   
-                    sort                long                157                 
-                    main                long                243                 
+                    sorting             float               2                   
+                    sort                long                175                 
+                    main                long                261                 
 
 visible             ext function        type                idxFirstLE          
-main                randome             long                271                 
-main                index               361                 
-main                result              366                 
 
 visible             array               type                idxFirstLE          
-func                x                   long                81                  
-main                array               float               251                 
-main                array               251                 
-main                array               251                 
-main                array               251                 
-main                array               251                 
-main                array               251                 
-main                array               251                 
-main                array               251                 
-main                array               251                 
+sorting             x                   long                99                  
+main                array               float               269                 
 
 visible             parameter           type                idxfirstle          
-func                array               long                TI[5]5                   
-func                size                long                TI[8]8                   
-func                size                ------              TI[8]8                   
-func                size                ------              TI[8]8                   
-func                size                ------              TI[8]8                   
-func                array               ------              TI[5]5                   
-func                size                ------              TI[8]8                   
-sort                array               long                TI[160]160                 
-sort                size                long                TI[163]163                 
-sort                array               ------              TI[160]160                 
-sort                array               ------              TI[160]160                 
-sort                array               ------              TI[160]160                 
-sort                array               ------              TI[160]160                 
-sort                size                ------              TI[163]163                 
-sort                size                ------              TI[163]163                 
+sorting             array               float               TI[5]5                   
+sorting             size                long                TI[8]8                   
+sort                array               long                TI[178]178                 
+sort                size                long                TI[181]181                 
 
 type                size(string)        idxfirstle          value
-long                ------              -1                  1.4013e-44          
-long                ------              -1                  1.4013e-45          
-long                ------              7                   -4.31602e+08        
-long                ------              -1                  2.8026e-45          
-long                ------              0                   -4.31602e+08        
-long                ------              0                   -4.31602e+08        
-long                ------              -1                  2.8026e-42          
-long                ------              -1                  7.78421e-42         
-float               ------              -1                  0.14                
-long                ------              -1                  3.57331e-43         
-long                ------              25                  -4.31602e+08        
-long                ------              4                   -4.31602e+08        
-long                ------              4                   -4.31602e+08        
-long                ------              -1                  2.8026e-44          
-long                ------              -1                  4.06377e-44         
-long                ------              -1                  5.60519e-44         
-long                ------              -1                  1.68156e-44         
-long                ------              25                  -4.31602e+08        
-long                ------              7                   -4.31596e+08        
-long                ------              0                   -4.31596e+08        
-long                ------              7                   -4.31602e+08        
-long                ------              0                   -4.31602e+08        
-string              2                   47                  ss                  
-long                ------              7                   -4.31602e+08        
-long                ------              13                  -4.31602e+08        
-string              20                  63                  Результат  x+*!~y = 
-string              8                   83                  asdasdss            
-long                ------              31                  -4.31602e+08        
-string              12                  92                  Результат =         
-long                ------              7                   -4.31602e+08        
-long                ------              0                   -4.31602e+08        
-long                ------              7                   -4.31602e+08        
-long                ------              7                   -4.31602e+08        
-long                ------              0                   -4.31602e+08        
+long                ------              14                  18                  
+long                ------              19                  10                  
+long                ------              20                  1                   
+long                ------              22                  9                   
+long                ------              24                  20                  
+long                ------              58                  2                   
+long                ------              63                  0                   
+float               ------              76                  0.14                
+float               ------              81                  3.14                
+float               ------              86                  1.61                
+long                ------              91                  255                 
+long                ------              109                 29                  
+long                ------              111                 40                  
+long                ------              117                 12                  
+string              2                   147                 ss                  
+string              20                  196                 Результат  x+*!~y = 
+string              8                   255                 asdasdss            
+string              12                  280                 Результат =         
+Всего идентификаторов: 53                  
