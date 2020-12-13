@@ -1,4 +1,4 @@
-;--10-12-2020 --четверг-- 23:51:49 --
+;--13-12-2020 --воскресенье-- 17:32:26 --
 ;-------------ASM-------------
 .586p
 .model flat, stdcall
@@ -28,159 +28,88 @@ endl		dword	0Ah, 0
 
 .DATA
 ;------------- LITERALS -------------
-literal_4               DWORD     18
-literal_6               DWORD     10
-literal_7               DWORD     1
+literal_4               DWORD     0
+literal_6               DWORD     234
 literal_8               DWORD     9
-literal_9               DWORD     20
-literal_11              DWORD     2
-literal_12              DWORD     0
-literal_14              REAL4     0.14
-literal_16              REAL4     3.14
-literal_18              REAL4     1.61
-literal_20              DWORD     255
-literal_23              DWORD     29
-literal_24              DWORD     40
-literal_26              DWORD     12
-literal_33              BYTE      "ss",str_end
-literal_41              BYTE      "Результат  x+*!~y = ",str_end
-literal_44              BYTE      "asdasdss",str_end
-literal_50              BYTE      "Результат = ",str_end
+literal_9               DWORD     8
+literal_10              DWORD     7
+literal_11              DWORD     6
+literal_13              DWORD     16
+literal_14              DWORD     2
+literal_15              DWORD     12
+literal_16              DWORD     0
+literal_23              DWORD     1
 ;------------- VARIABLES ------------
-gerty_sorting           BYTE      0
+y_sorting               DWORD     247111111
+qerty_sorting           BYTE      0
+x_sorting               DWORD     10 DUP(0)
 index_sorting           DWORD     0
-k_sorting               DWORD     0
-m_sorting               REAL4     0.0
-pi_sorting              REAL4     0.0
-ideal_sorting           REAL4     0.0
-summ_sorting            DWORD     0
-jokes_sorting           DWORD     0
-glob_a_sorting          DWORD     0
-v_sorting               BYTE      0
-b_sorting               BYTE      0
-c_sorting               BYTE      0
-e_sorting               BYTE      0
-d_sorting               BYTE      0
-msys_sorting            DB        255 DUP(0)
-index_sort              BYTE      0
-indexsec_sort           BYTE      0
-result_sort             DWORD     0
-msys_sort               DB        255 DUP(0)
-temp_sort               DWORD     0
-mss_sort                DB        255 DUP(0)
-size_main               BYTE      0
-index_main              BYTE      0
-result_main             DB        255 DUP(0)
-avg_main                DWORD     0
-temp_main               DWORD     0
+h_sort                  DWORD     0
+y_main                  DWORD     0
 ;--------------- CODE ---------------
 .CODE
-main PROC 
-START :
-push 0
-push 0
-call sorting
-;size = 20 ; 
-mov eax, literal_9
-mov size_main, al
-;array [ size ] ; 
-mov bl, size_main
-;index ; 
-;result = Результат =  ; 
-;array [ index ] = avg ( size + 1 , size , array ) ; 
-mov bl, index_main
-mov eax, avg_main
-mov al, size_main
-add eax, ebx
-mov ebx, literal_7
-mov bl, size_main
-;index < size ) ; 
-mov bl, size_main
-;avg = temp ( array , size ) ; 
-mov eax, temp_main
-mov bl, size_main
-mov avg_main, eax
-;
-mov eax, literal_12
-mov index_main, al
-;array [ index ] > avg ) { t temp ; 
-mov bl, index_main
-mov eax, avg_main
-mov ebx, temp_main
-;
-mov bl, index_main
-;
-mov bl, index_main
-mov al, index_main
-mov eax, literal_7
-;
-mov bl, index_main
-mov eax, literal_7
-mov ebx, temp_main
-;index n ; 
-
-ret
-main ENDP
-
 sorting PROC ,array_sorting : REAL4, size_sorting : DWORD
-;gerty = 18 ; 
-mov eax, literal_4
-mov gerty_sorting, al
-;index = 10 1 + 9 * 20 / gerty + ; 
+;(3)y = 10 ; 
+Overflow:
 mov eax, literal_6
-mov ebx, literal_7
-add eax, ebx
-mov ebx, literal_8
-mul ebx
-mov ebx, literal_9
-div ebx
-mov bl, gerty_sorting
-add eax, ebx
-mov index_sorting, eax
-;k = 10 ; 
+mov ebx, literal_4
+idiv ebx
+cmp ebx, 0
+je error
+
+mov y_sorting, eax
+jo Overflow
+error:
+;(4)qerty = 18 y + ; 
 mov eax, literal_6
-mov k_sorting, eax
-;
-mov eax, index_sorting
-mov ebx, literal_6
+mov ebx, y_sorting
+add eax, ebx
+cmp eax, 0ffh
+ja Overflow
+mov qerty_sorting, al 
+;cmp jo
+;(5)x [ 10 ] = { 10 , 9 , 8 , 7 , 6 } ; 
+;(6)index = 16 16 * 2 * 12 - x [ 0 ] + ; 
+mov eax, literal_13
+mov ebx, literal_13
+imul eax, ebx
+mov ebx, literal_14
+imul eax, ebx
+mov ebx, literal_15
 sub eax, ebx
+push eax
+mov ecx, offset x_sorting
+push ecx
+mov eax, literal_16
+pop ecx
+imul eax, type x_sorting
+add ecx, eax
+mov edx, [ecx]
+pop eax
+mov ebx, edx
+add eax, ebx
 mov index_sorting, eax
-;index = 1 ; 
-mov eax, literal_7
-mov index_sorting, eax
-;index < size ) ; 
-;size > 2 ) { size = 0 ; 
-mov eax, literal_11
-mov ebx, literal_12
-mov size_sorting, eax
+;(6)
+mov eax, literal_16
 
 ret
 sorting ENDP
 
 sort PROC ,array_sort : DWORD, size_sort : DWORD
-;index ; 
-;indexsec ; 
-;result ; 
-;msys = Результат  x+*!~y =  ; 
-;indexsec = index ; 
-mov bl, index_sort
-;temp ; 
-;
-mov bl, index_sort
-;
-mov bl, index_sort
-mov al, index_sort
-;
-mov bl, index_sort
-mov eax, temp_sort
-mov array_sort, eax
-;indexsec < size ) ; 
-;
-;index < size ) ; 
-;mss = asdasdss ; 
-;result ; 
-
+;(11)h = 10 ; 
+mov eax, literal_4
+mov h_sort, eax
+ mov eax, 0
 ret
 sort ENDP
+
+main PROC 
+call sorting
+;(15)y = 1 ; 
+mov eax, literal_23
+mov y_main, eax
+
+ret
+main ENDP
 
 end main

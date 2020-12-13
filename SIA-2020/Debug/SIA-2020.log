@@ -1,4 +1,6 @@
 ﻿  Assembling ..\course_LP\source.asm...
-..\course_LP\source.asm(158): warning A6004: procedure argument or local not referenced : array_sorting
-..\course_LP\source.asm(184): warning A6004: procedure argument or local not referenced : size_sort
+..\course_LP\source.asm(96): warning A6004: procedure argument or local not referenced : array_sorting
+..\course_LP\source.asm(96): warning A6004: procedure argument or local not referenced : size_sorting
+..\course_LP\source.asm(104): warning A6004: procedure argument or local not referenced : array_sort
+..\course_LP\source.asm(104): warning A6004: procedure argument or local not referenced : size_sort
   SIA-2020.vcxproj -> C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\Debug\SIA-2020.exe

@@ -57,15 +57,15 @@ namespace GM
 					start++;
 					data.negativeValue = true;
 				}
-				else if(*(start + 1) == '-') {
+				/*else if(*(start + 1) == '-') {
 					end++;
-				}
+				}*/
 				break;
-			case '+':
+			/*case '+':
 				if (*(start + 1) == '+') {
 					end++;
 				}
-				break;
+				break;*/
 			case '{':
 				data.braces++;
 				break;
