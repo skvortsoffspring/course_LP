@@ -1,8 +1,12 @@
-main 
-{
-long x[10] = {1, 3 , 1};
-x[0] = x[2];
-writeline(10 9 +)
+main{
+long x[20]={0,5,2,13,4,15,6,7,8,91,1111};
+long y = 0;
+repeat{
+writeline(x[y]);
+y = y 1 +;
+
+}
+until(y <= 10);
 
 }
 }

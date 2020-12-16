@@ -12,12 +12,14 @@
 						"endl				dword	0Ah, 0\n"		\
 						"\n"
 #define SYSTEMERRORS	";--------------- SYSTEM ERROR ---------------;\n"	\
-						"erroverflow 			BYTE      \"Integer overflow\",str_end\n"			\
+						"erroverflow 			BYTE      \"Error Integer overflow\",str_end\n"			\
 						"errdivbyzero			BYTE      \"Integer division by zero\",str_end\n"   \
 						"errrandomefunc			BYTE      \"Error parametres second less first or equals\",str_end\n"   \
+						"erroverflowbyte		BYTE      \"Error byte overflow\",str_end\n"   \
 						"errorid1				DWORD	  1\n"									\
 						"errorid2				DWORD	  2\n"									\
 						"errorid3				DWORD	  3\n"									\
+						"errorid4				DWORD	  4\n"									\
 
 #define DATA	".DATA\n"												\
 				";------------- SYSTEM VARIABLE -------------;\n"		\
@@ -54,6 +56,8 @@
 				"invoke @error, errorid1\n"													\
 				"overflow:\n"																\
 				"invoke @error, errorid2\n"													\
+				"overflowbyte:\n"																\
+				"invoke @error, errorid4\n"													\
 				"OK:\n"
 #define DEVISION_OVERFLOW	";--- division overflow ---;\n"
 	
@@ -81,8 +85,8 @@
 // errors macroses
 #define OVERFLOW_ASM		"jc overflow\n"
 
-#define OVERFLOW_ASM_BYTE	"cmp eax, ffh\n"\
-							"je overflow\n"
+#define OVERFLOW_ASM_BYTE	"cmp eax, 0100h\n"\
+							"jge overflowbyte\n"
 
 // registers
 #define EAX			", eax"
@@ -288,6 +292,11 @@ constexpr auto FUNCTION_ERROR =
 "invoke write, addr errrandomefunc\n"
 "jmp enderror\n"
 "testerror3:\n"
+"cmp errorid4,eax\n"
+"je testerror4\n"
+"invoke write, addr erroverflowbyte\n"
+"jmp enderror\n"
+"testerror4:\n"
 "enderror:"
 "push errorid\n"
 "call ExitProcess\n"
@@ -355,8 +364,9 @@ namespace GTA
 	void PrintConst(LT::LexTable*, IT::IdTable*);
 	int FillArray(LT::LexTable*, IT::IdTable*, int);
 	int ArrayFillIndex(LT::LexTable*, IT::IdTable*, int);
+	int PrintCycles(LT::LexTable*, IT::IdTable*, int);
 	int PrintWriteFunctions(LT::LexTable*, IT::IdTable*, int);
-	int Print—ondition(LT::LexTable*, IT::IdTable*, int,bool);
+	int Print—ondition(LT::LexTable*, IT::IdTable*, int, bool, bool);
 
 
 }

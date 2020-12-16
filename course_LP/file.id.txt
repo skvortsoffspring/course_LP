@@ -1,14 +1,15 @@
-ID table, modified time: 16-12-2020 --среда-- 10:54:44 
+ID table, modified time: 16-12-2020 --среда-- 22:02:49 
 
 visible             constant            type                value int           value str           idxfirstLE          
 
 visible             variable            type                value int           value str           idxfirstLE          
+main                y                   long                0                   -                    33
 
 visible             function            type                idfirstLE           
                     main                long                0                   
 
 visible             ext function        type                idxFirstLE          
-main                writeline           string              26                  
+main                writeline           string              39                  
 
 visible             array               type                idxFirstLE          
 main                x                   long                3                   
@@ -16,10 +17,18 @@ main                x                   long                3
 visible             parameter           type                idxfirstle          
 
 type                size(string)        idxfirstle          value
-long                ------              5                   10                  
-long                ------              9                   1                   
-long                ------              11                  3                   
-long                ------              18                  0                   
-long                ------              23                  2                   
-long                ------              29                  9                   
-Всего идентификаторов: 9                   
+long                ------              5                   20                  
+long                ------              9                   0                   
+long                ------              11                  5                   
+long                ------              13                  2                   
+long                ------              15                  13                  
+long                ------              17                  4                   
+long                ------              19                  15                  
+long                ------              21                  6                   
+long                ------              23                  7                   
+long                ------              25                  8                   
+long                ------              27                  91                  
+long                ------              29                  1111                
+long                ------              50                  1                   
+long                ------              59                  10                  
+Всего идентификаторов: 18                  

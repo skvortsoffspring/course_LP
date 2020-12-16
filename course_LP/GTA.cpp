@@ -428,7 +428,7 @@ namespace GTA
 						poslenta = ArrayFillIndex(lextable, idtable, poslenta);
 					}
 					else {
-						poslenta = ProcessingDeclaration(lextable, idtable, poslenta, true, false, true);
+						poslenta = ProcessingDeclaration(lextable, idtable, poslenta, false, false, true);
 					}
 					break;
 				}
@@ -440,15 +440,19 @@ namespace GTA
 				}
 				case LEX_IF:
 				{
-					poslenta = Print—ondition(lextable, idtable, poslenta, true);
-					*file << "@f" << (CountCondition-1) << ":" << ENDL;
+					poslenta = Print—ondition(lextable, idtable, poslenta, true, false);
+					*file << "@f" << (CountCondition - 1) << ":" << ENDL;
 					break;
 				}
 				case LEX_ELSE:
 				{
 					*file << "jmp @t" << CountCondition << ENDL;
-					poslenta = Print—ondition(lextable, idtable, poslenta+1, false);		//if else
+					poslenta = Print—ondition(lextable, idtable, poslenta + 1, false, false);		//if else
 					break;
+				}
+				case LEX_REPEAT:
+				{
+					poslenta = PrintCycles(lextable, idtable, poslenta);
 				}
 				}
 
@@ -470,7 +474,7 @@ namespace GTA
 		*file << ENDMAIN;
 		posfunc.clear();
 	}
-	int  ProcessingDeclaration(LT::LexTable* lextable, IT::IdTable* idtable, int poslenta, bool recursion, bool assign, bool firstcall)
+	int  ProcessingDeclaration(LT::LexTable* lextable, IT::IdTable* idtable, int poslenta, bool logical, bool assign, bool firstcall)
 	{
 		
 		PrintChain(lextable, idtable, poslenta - 1);
@@ -493,7 +497,7 @@ namespace GTA
 				{
 				case IT::A:
 				{
-					//if (!firstcall) {
+					if (true) {
 						int posarray = poslenta;
 						switch (reg32) {
 						case ebx:
@@ -510,38 +514,49 @@ namespace GTA
 						*file << UNDERLINE;
 						*file << idtable->table[lextable->table[posarray].idxTI].prefix << ENDL;
 						*file << PUSH_ECX;
-						 ProcessingDeclaration(lextable, idtable, poslenta+1, true, false, false);					// ÂÍÛÒËˇ 
+						poslenta = ProcessingDeclaration(lextable, idtable, poslenta + 1, false, false, false);					// ÂÍÛÒËˇ 
 						*file << POP_ECX;
-						*file << IMUL_EAX_TYPE << idtable->table[lextable->table[posarray].idxTI].id;			// ‚˚˜ÂÒÎËÚ¸ ‡ÁÏÂ ‚ ·‡ÈÚ‡ı ‰Îˇ ÒÏÂ˘ÂÌËˇ																// ‚ÓÒÒÚ‡Ì‡‚ÎË‚‡ÂÏ Â„ËÒÚ ‚ ÍÓÚÓÓÏ ÒÓ‰ÂÊËÚÒˇ ÂÁÛÎ¸Ú‡Ú
+						if (idtable->table[lextable->table[posarray].idxTI].iddatatype == IT::LONG)
+							*file << IMUL_EAX_TYPE;
+						if (idtable->table[lextable->table[posarray].idxTI].iddatatype == IT::CHAR) {
+							*file << XOR_EBX;
+							*file << "mov bl, al\n";
+							*file << MOV_EAX_EBX;
+							*file << IMUL_EAX_TYPE;
+							
+						}
+						*file << idtable->table[lextable->table[posarray].idxTI].id;
 						*file << UNDERLINE;
 						*file << idtable->table[lextable->table[posarray].idxTI].prefix << ENDL;
 						*file << ADD_ECX_EAX;
 						*file << MOV_EDX << PREFERRED_ECX;
-					
-					switch (reg32) {
-					case ebx:
-					{
-						*file << POP_EAX;
-						*file << MOV_EBX << EDX << ENDL;
-						reg32 = ecx;
-						break;
+
+						switch (reg32) {
+						case ebx:
+						{
+							*file << POP_EAX;
+							*file << MOV_EBX << EDX << ENDL;
+							reg32 = ecx;
+							break;
+						}
+						case ecx:
+						{
+							*file << POP_EAX << POP_EBX;
+							*file << PUSH_EDX;
+							stack++;
+						}
+						default:
+						{
+							*file << MOV_EAX_EDX;
+							reg32 = ebx;
+						}
+						}
 					}
-					case ecx:
-					{
-						*file << POP_EAX << POP_EBX;
-						*file << PUSH_EDX;
-						stack++;
-					}
-					default:
-					{
-						*file << MOV_EAX_EDX;
-						reg32 = ebx;
-					}
-					}
-					}
-					//return poslenta;
+					if(logical)
+						return poslenta;
 					break;
 				}
+
 				case IT::V:
 				{
 					switch (idtable->table[lextable->table[poslenta].idxTI].iddatatype)
@@ -961,7 +976,11 @@ namespace GTA
 			case LOGICALS:
 			{
 				return poslenta;
+				break;
 			}
+			case LEX_RIGHTESIS:
+				return poslenta-1;
+				break;
 			}
 			poslenta++;
 			
@@ -1093,7 +1112,7 @@ namespace GTA
 					break;
 				case IT::A:
 					int posfordatatype = poslenta;
-					poslenta = ProcessingDeclaration(lextable, idtable, poslenta, false, true, false);
+					poslenta = ProcessingDeclaration(lextable, idtable, poslenta, false, false, false);
 					*file << "invoke int_to_char, ADDR output";
 					switch (idtable->table[lextable->table[posfordatatype].idxTI].iddatatype)
 					{
@@ -1116,15 +1135,15 @@ namespace GTA
 		if(!atLeatsOneParametres) *file << "invoke write, ADDR endl\n"; // not at leats one parametres
 		return poslenta - 1;
 	}
-	int Print—ondition(LT::LexTable* lextable, IT::IdTable* idtable, int poslenta, bool lexif)
+	int Print—ondition(LT::LexTable* lextable, IT::IdTable* idtable, int poslenta, bool lexif, bool cycle)
 	{
 		int countbraces = 0;
 		bool elseis = false;
-		if (lexif)
+		bool eax = true;
+		int poslogical = 0;
+		if (lexif || cycle)
 		{
-			bool eax = true;
-			int poslogical = 0;
-			while (lextable->table[poslenta].lexema[0] != LEX_LEFTBRACE) {
+			while (lextable->table[poslenta].lexema[0] != LEX_LEFTBRACE && lextable->table[poslenta].lexema[0] != LEX_SEMICOLON) {
 				if (lextable->table[poslenta].lexema[0] == LOGICALS)
 					poslogical = poslenta;
 				if (lextable->table[poslenta].idxTI != TI_NULLIDX) {
@@ -1139,7 +1158,7 @@ namespace GTA
 							*file << LITERALS << UNDERLINE << lextable->table[poslenta].idxTI << ENDL;
 							break;
 						case IT::STR:
-							throw ERROR_THROW_LINE(140, lextable->table[poslenta].sn);
+							//throw ERROR_THROW_LINE(140, lextable->table[poslenta].sn);
 							break;
 						}
 						break;
@@ -1162,15 +1181,16 @@ namespace GTA
 							*file << idtable->table[lextable->table[poslenta].idxTI].prefix << ENDL;
 							break;
 						case IT::STR:
-							throw ERROR_THROW_LINE(140, lextable->table[poslenta].sn);
+							//throw ERROR_THROW_LINE(140, lextable->table[poslenta].sn);
 							break;
 						}
+						break;
 					case IT::A:
-						if (!eax) *file << PUSH_EAX << ENDL;
-						poslenta = ProcessingDeclaration(lextable, idtable, poslenta, false, true, false) - 1;
-						if (!eax) {
-							*file << POP_EBX;
-						}
+						//if (!eax) *file << PUSH_EAX << ENDL;
+						poslenta = ProcessingDeclaration(lextable, idtable, poslenta, true, true, false);
+						//if (!eax) {
+						//	*file << POP_EBX;
+						//}
 						break;
 
 					}
@@ -1178,8 +1198,9 @@ namespace GTA
 				}
 				poslenta++;
 			}
+			
+				*file << CMP_EAX_EBX;
 
-			*file << CMP_EAX_EBX;
 			switch (lextable->table[poslogical].expression[0])
 			{
 			case '<':
@@ -1209,65 +1230,118 @@ namespace GTA
 			}
 			}
 		}
-
-		do
-		{
-			if (lextable->table[poslenta].lexema[0] == LEX_LEFTBRACE)
-				countbraces++;
-			if (lextable->table[poslenta].lexema[0] == LEX_RIGHTBRACE)
-				countbraces--;
-
-			switch (lextable->table[poslenta].lexema[0])
+		if (!cycle) {
+			do
 			{
+				if (lextable->table[poslenta].lexema[0] == LEX_LEFTBRACE)
+					countbraces++;
+				if (lextable->table[poslenta].lexema[0] == LEX_RIGHTBRACE)
+					countbraces--;
 
-			case LEX_ID:
-			{
-				if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::C) {
-					if (lextable->table[poslenta - 1].lexema[0] != LEX_TYPE && lextable->table[poslenta + 1].lexema[0] == LEX_ASSIGN)
-						throw ERROR_THROW_LINE(139, lextable->table[poslenta].sn);
-				}
-				else if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::A && lextable->table[poslenta - 1].lexema[0] == LEX_TYPE)
+				switch (lextable->table[poslenta].lexema[0])
 				{
-					poslenta = FillArray(lextable, idtable, poslenta);
-				}
-				else if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::A) {
-					poslenta = ArrayFillIndex(lextable, idtable, poslenta);
-				}
-				else {
-					poslenta = ProcessingDeclaration(lextable, idtable, poslenta, true, false, true);
-				}
-				break;
-			}
-			case LEX_WRITE:
-			case LEX_COMMA:
-			{
-				poslenta = PrintWriteFunctions(lextable, idtable, poslenta);
-				break;
-			}
-			case LEX_IF:
-			{
 
-				poslenta = Print—ondition(lextable, idtable, poslenta,true);
-				break;
-			}
-			case LEX_ELSE:
-			{
+				case LEX_ID:
+				{
+					if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::C) {
+						if (lextable->table[poslenta - 1].lexema[0] != LEX_TYPE && lextable->table[poslenta + 1].lexema[0] == LEX_ASSIGN)
+							throw ERROR_THROW_LINE(139, lextable->table[poslenta].sn);
+					}
+					else if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::A && lextable->table[poslenta - 1].lexema[0] == LEX_TYPE)
+					{
+						poslenta = FillArray(lextable, idtable, poslenta);
+					}
+					else if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::A) {
+						poslenta = ArrayFillIndex(lextable, idtable, poslenta);
+					}
+					else {
+						poslenta = ProcessingDeclaration(lextable, idtable, poslenta, false, false, true);
+					}
+					break;
+				}
+				case LEX_WRITE:
+				case LEX_COMMA:
+				{
+					poslenta = PrintWriteFunctions(lextable, idtable, poslenta);
+					break;
+				}
+				case LEX_IF:
+				{
 
-				poslenta = Print—ondition(lextable, idtable, poslenta, false);		//if else
-				break;
-			}
-			}
+					poslenta = Print—ondition(lextable, idtable, poslenta, true,false);
+					break;
+				}
+				case LEX_ELSE:
+				{
 
-			poslenta++;
-		} while (countbraces);
-		if(!lexif)
-			*file << "@t" << CountCondition << ":" << ENDL;
-		CountCondition++;
+					poslenta = Print—ondition(lextable, idtable, poslenta, false,false);		//if else
+					break;
+				}
+				}
+
+				poslenta++;
+			} while (countbraces);
+			if (!lexif)
+				*file << "@t" << CountCondition << ":" << ENDL;
+			CountCondition++;
+		}
 		return poslenta - 1;
 	}
-	int PrintCyclesint(LT::LexTable* lextable, IT::IdTable* idtable, int poslenta)
+	int PrintCycles(LT::LexTable* lextable, IT::IdTable* idtable, int poslenta)
 	{
-		return 0;
+		int countbraces = 0;
+		*file << "@f" << CountCondition << ":" << ENDL;
+			do
+			{
+				if (lextable->table[++poslenta].lexema[0] == LEX_LEFTBRACE)
+					countbraces++;
+				if (lextable->table[poslenta].lexema[0] == LEX_RIGHTBRACE)
+					countbraces--;
+
+				switch (lextable->table[poslenta].lexema[0])
+				{
+
+				case LEX_ID:
+				{
+					if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::C) {
+						if (lextable->table[poslenta - 1].lexema[0] != LEX_TYPE && lextable->table[poslenta + 1].lexema[0] == LEX_ASSIGN)
+							throw ERROR_THROW_LINE(139, lextable->table[poslenta].sn);
+					}
+					else if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::A && lextable->table[poslenta - 1].lexema[0] == LEX_TYPE)
+					{
+						poslenta = FillArray(lextable, idtable, poslenta);
+					}
+					else if (idtable->table[lextable->table[poslenta].idxTI].idtype == IT::A) {
+						poslenta = ArrayFillIndex(lextable, idtable, poslenta);
+					}
+					else {
+						poslenta = ProcessingDeclaration(lextable, idtable, poslenta, false, false, true);
+					}
+					break;
+				}
+				case LEX_WRITE:
+				case LEX_COMMA:
+				{
+					poslenta = PrintWriteFunctions(lextable, idtable, poslenta);
+					break;
+				}
+				case LEX_IF:
+				{
+
+					poslenta = Print—ondition(lextable, idtable, poslenta, true,false);
+					break;
+				}
+				case LEX_ELSE:
+				{
+
+					poslenta = Print—ondition(lextable, idtable, poslenta, false, false);		//if else
+					break;
+				}
+				}
+			} while (countbraces);
+			if(lextable->table[poslenta+1].lexema[0] == LEX_UNTIL)
+				poslenta = Print—ondition(lextable, idtable, poslenta, false, true);
+			return poslenta-1;
 	}
 	void PrintChain(LT::LexTable* lextable, IT::IdTable* idtable, int pos)
 	{

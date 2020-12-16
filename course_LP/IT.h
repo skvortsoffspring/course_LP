@@ -14,7 +14,7 @@
 namespace IT											// таблица идентификатов
 {
 	enum IDDATATYPE { NUL, LONG, STR, CHAR, FLOAT, BOOL };// типы данных идентификаторов: integer, string, byte
-	enum IDTYPE		{ N, V, F, P, L, S, E , A, C};			// типы идентификаторов: переменна€, функци€, параметр, литерал, внешн€€ функци€, массив
+	enum IDTYPE		{ N, V, F, P, L, S, E , A, C, W};	// типы идентификаторов: переменна€, функци€, параметр, литерал, внешн€€ функци€, массив
 	enum CALCULUS	{ NC, DEC, OCT, HEX, BIN };			// системы исчислени€
 	
 	struct Entry										// строка таблицы идентификаторов

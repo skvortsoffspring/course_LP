@@ -149,7 +149,7 @@ namespace GRB
 			Rule::Chain(4, TS('l'), NS('M'), TS(','), NS('W'))
 		),
 		Rule(NS('A'), GRB_ERROR_SERIES + 5, 
-			2, // литералы массива
+			2, // литералы массива при присваивании
 			Rule::Chain(1, TS('l')),
 			Rule::Chain(3, TS('l'), TS(','), NS('A'))		
 		),

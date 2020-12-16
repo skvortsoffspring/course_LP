@@ -34,13 +34,16 @@ namespace LT							// таблица лексем
 		int uqu = 1;								//для печати с новой строки
 		for (int i = 0; i < lextable->size; i++)
 		{
+			fout << i << ">>\t";
 			if (uqu != lextable->table[i].sn) {
 				fout << std::endl;
 				uqu = lextable->table[i].sn;
 			}
 			fout << lextable->table[i].lexema;
+			
 			if (lextable->table[i].idxTI != LT_TI_NULLXDX)
 				fout << "(" << lextable->table[i].idxTI << ")"; //удалить
+			fout << ENDL;
 			//fout << lextable->table[i].expression;
 		}
 		fout.close();

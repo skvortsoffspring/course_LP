@@ -7,6 +7,7 @@
 
 namespace GM
 {
+	int main = 0;
 	int ID = TI_NULLIDX;
 	void dataProcesing(unsigned char* text, std::fstream* stream, LT::LexTable* lextable, IT::IdTable* idtable)
 	{
@@ -196,6 +197,12 @@ namespace GM
 				end = start;
 			}
 			end++;
+		}
+		if (!main) {
+			throw ERROR_THROW_LINE(143, data.count_lines);
+		}
+		else if (main > 1) {
+			throw ERROR_THROW_LINE(146, data.count_lines);
 		}
 	}
 
@@ -793,6 +800,7 @@ namespace GM
 			if (result = execute(graph_main)) {
 				entry->iddatatype = IT::IDDATATYPE::LONG;
 				entry->idtype = IT::IDTYPE::F;
+				main++;
 				entry->value.vint = 0;
 				return LEX_MAIN;
 			}
@@ -919,6 +927,23 @@ namespace GM
 			if (result = execute(graph_writeline)) {
 				entry->idtype = IT::IDTYPE::E;
 				entry->iddatatype = IT::STR;
+				entry->value.vbool = 0;
+				return LEX_WRITEL;
+				break;
+			}
+			FST::FST graph_warnins(string, 9,
+				FST::NODE(1, FST::RELATION('w', 1)),
+				FST::NODE(1, FST::RELATION('a', 2)),
+				FST::NODE(1, FST::RELATION('r', 3)),
+				FST::NODE(1, FST::RELATION('n', 4)),
+				FST::NODE(1, FST::RELATION('i', 5)),
+				FST::NODE(1, FST::RELATION('n', 6)),
+				FST::NODE(1, FST::RELATION('g', 7)),
+				FST::NODE(1, FST::RELATION('s', 8)),
+				FST::NODE());
+			if (result = execute(graph_writeline)) {
+				entry->idtype = IT::IDTYPE::W;
+				entry->iddatatype = IT::BOOL;
 				entry->value.vbool = 0;
 				return LEX_WRITEL;
 				break;
