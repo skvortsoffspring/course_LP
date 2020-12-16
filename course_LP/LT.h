@@ -30,13 +30,14 @@
 #define LEX_MORE			'c'			// symbol compare >
 #define LEX_EQUALS			'c'			// symbol compare ==
 #define LEX_NOT_EQUALS		'c'			// symbol compare !=
-#define LOGICALS			'c'			// all expressions
+#define LOGICALS			'c'			// all expressions >= <=
 #define LEX_XOR				'b'			// symbol compare ^
 #define LEX_INVERSION		'b'			// symbol compare ~
 #define LEX_AND				'b'			// symbol compare |
 #define LEX_OR				'b'			// symbol compare &
 #define LEX_SHR				'b'			// symbol compare >>
 #define LEX_SHL				'b'			// symbol compare <<
+#define BINARY				'b'
 #define LEX_WRITE			'w'			// write to console
 #define LEX_WRITEL			'w'			// write to console
 #define LEX_SQUARE_RIGHT	']'			// right square less
@@ -52,13 +53,13 @@ namespace LT									// таблица лексем
 	struct Entry								// строка таблицы лексем
 	{
 		char lexema[LEXEMA_FIXSIZE + 1];		// лексема
-		char expression[LEXEMA_FIXSIZE + 1];	// выражение +,-,/,*
+		char expression[LEXEMA_FIXSIZE + 2];	// выражение +,-,/,*
 		int sn;									// номер строки в исходном тексте
 		int idxTI;								// индекс в таблице идентификаторов или LT_TI_NULLIDX
 		Entry()
 		{
 			memset(lexema, 0x00, LEXEMA_FIXSIZE + 1);
-			memset(expression, 0x00, LEXEMA_FIXSIZE + 1);
+			memset(expression, 0x00, LEXEMA_FIXSIZE + 2);
 			sn = 0;
 			idxTI = LT_TI_NULLXDX;
 		}

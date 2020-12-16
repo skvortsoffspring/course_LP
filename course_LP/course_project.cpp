@@ -101,6 +101,7 @@ int _tmain(int argc, _TCHAR* argv[])
 #ifdef TEST5
 	Log::LOG log = Log::INITLOG;
 	try {
+
 		std::chrono::high_resolution_clock::time_point t1 = std::chrono::high_resolution_clock::now();
 
 		Parm::PARM parm = Parm::getparm(argc, argv);
@@ -114,7 +115,10 @@ int _tmain(int argc, _TCHAR* argv[])
 		LT::LexTable tableLEX = LT::Create(LT_MAXSIZE);
 		IT::IdTable idTableID = IT::Create(TI_MAXSIZE);
 		GM::dataProcesing(in.text, log.stream, &tableLEX, &idTableID);
-
+		for (int i=  0; i < tableLEX.size; i++) {
+			if (tableLEX.table[i].expression[0])
+				std::cout << tableLEX.table[i].expression << ENDL;
+		}
 		LT::PrintTableLex(&tableLEX, parm.out);
 		IT::PrintIdTable(PARM_ID_DEFAULT_EXT, idTableID);
 		//PN::seachingExpressions(tableLEX, idTableID);

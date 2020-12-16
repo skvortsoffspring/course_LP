@@ -1,38 +1,25 @@
-ID table, modified time: 13-12-2020 --воскресенье-- 17:32:26 
+ID table, modified time: 16-12-2020 --среда-- 10:54:44 
+
+visible             constant            type                value int           value str           idxfirstLE          
 
 visible             variable            type                value int           value str           idxfirstLE          
-sorting             y                   long                0                   -                    12
-sorting             qerty               byte                0x00                -                    17
-sorting             index               long                0                   -                    42
-sort                h                   long                0                   -                    77
-main                y                   long                0                   -                    85
 
 visible             function            type                idfirstLE           
-                    sorting             float               2                   
-                    sort                long                67                  
-                    main                long                82                  
+                    main                long                0                   
 
 visible             ext function        type                idxFirstLE          
+main                writeline           string              26                  
 
 visible             array               type                idxFirstLE          
-sorting             x                   long                24                  
+main                x                   long                3                   
 
 visible             parameter           type                idxfirstle          
-sorting             array               float               TI[5]5                   
-sorting             size                long                TI[8]8                   
-sort                array               long                TI[70]70                  
-sort                size                long                TI[73]73                  
 
 type                size(string)        idxfirstle          value
-long                ------              14                  10                  
-long                ------              19                  18                  
-long                ------              32                  9                   
-long                ------              34                  8                   
-long                ------              36                  7                   
-long                ------              38                  6                   
-long                ------              44                  16                  
-long                ------              47                  2                   
-long                ------              49                  12                  
-long                ------              53                  0                   
-long                ------              87                  1                   
-Всего идентификаторов: 24                  
+long                ------              5                   10                  
+long                ------              9                   1                   
+long                ------              11                  3                   
+long                ------              18                  0                   
+long                ------              23                  2                   
+long                ------              29                  9                   
+Всего идентификаторов: 9                   

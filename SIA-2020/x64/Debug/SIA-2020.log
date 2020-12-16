@@ -1,0 +1,45 @@
+﻿  Assembling ..\course_LP\source.asm...
+..\course_LP\source.asm(3): error A2008: syntax error : .
+..\course_LP\source.asm(4): error A2008: syntax error : .
+..\course_LP\source.asm(5): error A2008: syntax error : .
+..\course_LP\source.asm(72): error A2008: syntax error : invoke
+..\course_LP\source.asm(76): error A2008: syntax error : invoke
+..\course_LP\source.asm(78): error A2070: invalid instruction operands
+..\course_LP\source.asm(115): error A2070: invalid instruction operands
+..\course_LP\source.asm(117): error A2070: invalid instruction operands
+..\course_LP\source.asm(123): error A2070: invalid instruction operands
+..\course_LP\source.asm(126): error A2070: invalid instruction operands
+..\course_LP\source.asm(129): error A2070: invalid instruction operands
+..\course_LP\source.asm(132): error A2070: invalid instruction operands
+..\course_LP\source.asm(169): error A2070: invalid instruction operands
+..\course_LP\source.asm(171): error A2070: invalid instruction operands
+..\course_LP\source.asm(173): error A2070: invalid instruction operands
+..\course_LP\source.asm(177): error A2070: invalid instruction operands
+..\course_LP\source.asm(187): error A2070: invalid instruction operands
+..\course_LP\source.asm(190): error A2070: invalid instruction operands
+..\course_LP\source.asm(193): error A2070: invalid instruction operands
+..\course_LP\source.asm(196): error A2070: invalid instruction operands
+..\course_LP\source.asm(202): error A2008: syntax error : invoke
+..\course_LP\source.asm(204): error A2008: syntax error : invoke
+..\course_LP\source.asm(216): error A2008: syntax error : invoke
+..\course_LP\source.asm(218): error A2008: syntax error : invoke
+..\course_LP\source.asm(257): error A2070: invalid instruction operands
+..\course_LP\source.asm(259): error A2070: invalid instruction operands
+..\course_LP\source.asm(260): error A2070: invalid instruction operands
+..\course_LP\source.asm(261): error A2070: invalid instruction operands
+..\course_LP\source.asm(267): error A2070: invalid instruction operands
+..\course_LP\source.asm(270): error A2008: syntax error : ,
+..\course_LP\source.asm(271): error A2070: invalid instruction operands
+..\course_LP\source.asm(274): error A2070: invalid instruction operands
+..\course_LP\source.asm(282): error A2008: syntax error : ,
+..\course_LP\source.asm(295): error A2070: invalid instruction operands
+..\course_LP\source.asm(298): error A2070: invalid instruction operands
+..\course_LP\source.asm(304): error A2070: invalid instruction operands
+..\course_LP\source.asm(307): error A2070: invalid instruction operands
+..\course_LP\source.asm(317): error A2008: syntax error : invoke
+..\course_LP\source.asm(319): error A2008: syntax error : invoke
+..\course_LP\source.asm(325): error A2008: syntax error : eax
+..\course_LP\source.asm(337): error A2070: invalid instruction operands
+..\course_LP\source.asm(339): error A2070: invalid instruction operands
+..\course_LP\source.asm(342): fatal error A1010: unmatched block nesting : write
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets(70,5): error MSB3721: выход из команды "ml64.exe /c /nologo /Zi /Fo"x64\Debug\source.obj" /W3 /errorReport:prompt  /Ta..\course_LP\source.asm" с кодом "1".

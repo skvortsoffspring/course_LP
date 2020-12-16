@@ -1,5 +1,5 @@
-;--13-12-2020 --воскресенье-- 17:32:26 --
-;-------------ASM-------------
+;--16-12-2020 --среда-- 10:54:45 --
+;-------------ASM-------------;
 .586p
 .model flat, stdcall
 .stack 4096
@@ -7,109 +7,113 @@
 includelib kernel32.lib
 includelib libucrt.lib
 
-;---------- STANDART PROTO ----------
+;---------- STANDART PROTO ----------;
 WriteConsoleA			PROTO : DWORD, : DWORD, : DWORD, : DWORD, : DWORD
-MessageBoxA				PROTO : DWORD, : DWORD, : DWORD, : DWORD
-write					PROTO : DWORD, : DWORD
-writeline				PROTO : DWORD, : DWORD
-int_to_char				PROTO : DWORD, : DWORD
+MessageBoxA  			PROTO : DWORD, : DWORD, : DWORD, : DWORD
+write					PROTO : DWORD
+writeline				PROTO : DWORD
+int_to_char  			PROTO : DWORD, : DWORD
 GetStdHandle			PROTO : DWORD
 SetConsoleOutputCP		PROTO : DWORD
 SetConsoleCP			PROTO : DWORD
-ExitProcess				PROTO : DWORD
+GetRandomNumber  		PROTO : DWORD, : DWORD
+ExitProcess  			PROTO : DWORD
 
-;------------ PPOTO USER ------------
-sorting                 PROTO : REAL4, : DWORD
-sort                    PROTO : DWORD, : DWORD
-;--------------- CONST --------------
+;------------ PPOTO USER ------------;
+;--------------- CONST --------------;
 .CONST
-str_end		EQU		0
-endl		dword	0Ah, 0
+str_end				EQU		0
+endl				dword	0Ah, 0
+
+;-------------USER CONST ------------;
 
 .DATA
-;------------- LITERALS -------------
-literal_4               DWORD     0
-literal_6               DWORD     234
+;------------- SYSTEM VARIABLE -------------;
+output					BYTE	 255 DUP(0)
+seed					DWORD	 0
+;--------------- SYSTEM ERROR ---------------;
+erroverflow 			BYTE      "Integer overflow",str_end
+errdivbyzero			BYTE      "Integer division by zero",str_end
+errrandomefunc			BYTE      "Error parametres second less first or equals",str_end
+errorid1				DWORD	  1
+errorid2				DWORD	  2
+errorid3				DWORD	  3
+;------------- LITERALS -------------;
+literal_2               DWORD     10
+literal_3               DWORD     1
+literal_4               DWORD     3
+literal_5               DWORD     0
+literal_6               DWORD     2
 literal_8               DWORD     9
-literal_9               DWORD     8
-literal_10              DWORD     7
-literal_11              DWORD     6
-literal_13              DWORD     16
-literal_14              DWORD     2
-literal_15              DWORD     12
-literal_16              DWORD     0
-literal_23              DWORD     1
-;------------- VARIABLES ------------
-y_sorting               DWORD     247111111
-qerty_sorting           BYTE      0
-x_sorting               DWORD     10 DUP(0)
-index_sorting           DWORD     0
-h_sort                  DWORD     0
-y_main                  DWORD     0
-;--------------- CODE ---------------
+;------------- VARIABLES ------------;
+x_main                  DWORD     10 DUP(0)
+;--------------- CODE ---------------;
 .CODE
-sorting PROC ,array_sorting : REAL4, size_sorting : DWORD
-;(3)y = 10 ; 
-Overflow:
-mov eax, literal_6
-mov ebx, literal_4
-idiv ebx
-cmp ebx, 0
-je error
+@error proc, errorid : dword
+mov eax, errorid
+cmp errorid1, eax
+je testerror1
+invoke write, addr erroverflow
+jmp enderror
+testerror1:
+cmp errorid2,eax
+je testerror2
+invoke write, addr errdivbyzero
+jmp enderror
+testerror2:
+cmp errorid3,eax
+je testerror3
+invoke write, addr errrandomefunc
+jmp enderror
+testerror3:
+enderror:push errorid
+call ExitProcess
+ret
+@error endp
 
-mov y_sorting, eax
-jo Overflow
-error:
-;(4)qerty = 18 y + ; 
-mov eax, literal_6
-mov ebx, y_sorting
-add eax, ebx
-cmp eax, 0ffh
-ja Overflow
-mov qerty_sorting, al 
-;cmp jo
-;(5)x [ 10 ] = { 10 , 9 , 8 , 7 , 6 } ; 
-;(6)index = 16 16 * 2 * 12 - x [ 0 ] + ; 
-mov eax, literal_13
-mov ebx, literal_13
-imul eax, ebx
-mov ebx, literal_14
-imul eax, ebx
-mov ebx, literal_15
-sub eax, ebx
-push eax
-mov ecx, offset x_sorting
-push ecx
-mov eax, literal_16
+GetRandomNumber  proc uses eax ebx ecx edi esi,
+min : DWORD,
+max : DWORD
+mov eax, min
+cmp eax, max
+jae errorparametres
+mov			eax, [seed]
+or eax, eax
+jnz		@2
+@1:
+RDTSC
+or eax, eax
+jz		@1
+@2:
+xor edx, edx
+mov		ebx, 127773
+div		ebx
+push		eax
+mov		eax, 16807
+mul		edx
+pop		edx
+push		eax
+mov		eax, 2836
+mul		edx
+pop		edx
+sub		edx, eax
+mov		eax, edx
+mov[seed], edx
+xor edx, edx
+mov		ebx, [max]
+sub		ebx, [min]
+inc		ebx
+div		ebx
+mov		eax, edx
+add		eax, [min]
+mov[seed], eax
+pop		edx
 pop ecx
-imul eax, type x_sorting
-add ecx, eax
-mov edx, [ecx]
-pop eax
-mov ebx, edx
-add eax, ebx
-mov index_sorting, eax
-;(6)
-mov eax, literal_16
-
+pop ebx
+jmp OK
+errorparametres:
+invoke @error, errorid3
+OK:
 ret
-sorting ENDP
-
-sort PROC ,array_sort : DWORD, size_sort : DWORD
-;(11)h = 10 ; 
-mov eax, literal_4
-mov h_sort, eax
- mov eax, 0
-ret
-sort ENDP
-
+GetRandomNumber endp
 main PROC 
-call sorting
-;(15)y = 1 ; 
-mov eax, literal_23
-mov y_main, eax
-
-ret
-main ENDP
-
-end main
