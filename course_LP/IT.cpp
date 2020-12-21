@@ -53,8 +53,6 @@ namespace IT
 		for (int i = 0; i < idtable.current_size; i++)
 		{
 			if (!strcmp(idtable.table[i].id, id) && idtable.table[i].idtype == F) {
-				idtable.table[idtable.current_size].idtype = F;
-				idtable.table[idtable.current_size].iddatatype = idtable.table[i].iddatatype;
 				visibility = true;
 				return lextable.table[idtable.table[i].idxfirstLE].idxTI;
 			}

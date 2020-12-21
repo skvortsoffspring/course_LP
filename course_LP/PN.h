@@ -16,5 +16,5 @@
 namespace PN
 {
 	void seachingExpressions(LT::LexTable& lextable, IT::IdTable& idtable);
-	bool polishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtable);
+	int polishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtable);
 }

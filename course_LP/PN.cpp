@@ -10,134 +10,115 @@ namespace PN {
 
 	void seachingExpressions(LT::LexTable& lextable, IT::IdTable& idtable)
 	{
+		int position = 0;
 		for (int i = 0; i < lextable.size; i++)
 		{
-			if (lextable.table[i].lexema[0] == EXPRESSIONS)
-				if (polishNotation((i - 1), lextable, idtable))
-				{
-					cout << " выражение преобразовано в строке: " << lextable.table[i].sn << endl;
-				}
-				else
-					cout << " выражение не преобразовано в строке: " << lextable.table[i].sn << endl;
+			if (lextable.table[i].lexema[0] == EXPRESSIONS) {
+				position = polishNotation((i - 1), lextable, idtable);
+				i = position;
+			}
 		}
+		for (int i = 0; i < lextable.size; i++)
+		{
+			
+				if (lextable.table[i].lexema[0] == EXPRESSIONS&& lextable.table[i].lexema[0] != LEX_WRITE) {
+					for (; lextable.table[i].lexema[0] != LEX_SEMICOLON && lextable.table[i].lexema[0] != LEX_WRITE; i++) {
+						if (lextable.table[i].lexema[0] == LEX_LEFTHESIS)
+							break;
+						if (lextable.table[i].idxTI != TI_NULLIDX)
+						{
+							if (idtable.table[lextable.table[i].idxTI].iddatatype == IT::STR && lextable.table[i].lexema[0] != LEX_WRITE)
+								throw ERROR_THROW_LINE(150, lextable.table[i].sn);
+						}
+					}
+
+				}
+			
+		}
+
 	}
 
-	bool polishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtable)
+	int polishNotation(int lextable_pos, LT::LexTable& lextable, IT::IdTable& idtable)
 	{
-		stack <char> stack;
-		list <char> operands;
+		stack <LT::Entry> stack;
+		list <LT::Entry> operands;
 		char exp(0);
 		bool exit(true);
-		bool expression = false;
-		short sizeparametres(0);
-		bool callFunction = false;
-		bool parametresnotnull = false;
+		int position = 0;
+		int position2 = lextable_pos;
+		LT::Entry temp = LT::Entry();
 
 		for (int i = lextable_pos; exit; i++)
 		{
-			if (lextable.table[i].idxTI != LT_TI_NULLXDX)
-				if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::P && callFunction)
-				{
-					if (!parametresnotnull)
-						sizeparametres = 1;
-					parametresnotnull = true;
-
-				}
-
-			if (lextable.table[i].lexema[0] == LEX_LITERAL)
+			if(lextable.table[i].lexema[0] == EXPRESSIONS)
 			{
-				if (!parametresnotnull)
-					sizeparametres = 1;
-				parametresnotnull = true;
+				exp = lextable.table[i].expression[0]; 
 			}
-
-			if (lextable.table[i].lexema[0] == LEX_ID)
-			{
-				if (idtable.table[lextable.table[i].idxTI].idtype == IT::IDTYPE::E)
-				{
-					callFunction = true;
-					continue;
-				}
-				else
-					exp = lextable.table[i].lexema[0];//idtable.table[lextable.table[i].idxTI].id[0];
-			}
-			else if (lextable.table[i].expression[0])
-				exp = lextable.table[i].expression[0];
 			else
+			{
 				exp = lextable.table[i].lexema[0];
-
+			}
 			switch (exp)
 			{
 			case LEFTHESIS:
-				stack.push(exp);
+				operands.push_back(lextable.table[i]);
 				break;
 			case RIGHTESIS:
-				while (stack.top() != LEFTHESIS)
+				while (stack.top().lexema[0] != LEFTHESIS)
 				{
 					operands.push_back(stack.top());
 					stack.pop();
 				}
-				if (callFunction)
-				{
-					operands.push_back(CALL_FUNCTION);
-					if (sizeparametres < MAX_PARAMETRES)
-					{
-						operands.push_back(sizeparametres + 48);
-					}
-				}
+				if(!stack.empty())
 				stack.pop();
-				parametresnotnull = false;
 				break;
 			case COMMA:
-				while (stack.top() != LEFTHESIS)
+				while (stack.top().expression[0] != LEFTHESIS)
 				{
 					operands.push_back(stack.top());
 					stack.pop();
 				}
-				if (parametresnotnull)
-					sizeparametres++;
 				break;
 			case ADD:
 			case SUB:
 				if (stack.empty())
 				{
-					stack.push(exp);
-					expression = true;
+					stack.push(lextable.table[i]);
 				}
-				else if (stack.top() == MUL ||
-					stack.top() == DIV ||
-					stack.top() == ADD ||
-					stack.top() == SUB)
+				else if (stack.top().expression[0] == MUL ||
+					stack.top().expression[0] == DIV ||
+					stack.top().expression[0] == ADD ||
+					stack.top().expression[0] == SUB)
 				{
 					operands.push_back(stack.top());
 					stack.pop();
-					stack.push(exp);
+					stack.push(lextable.table[i]);
 
 				}
 				else
-					stack.push(exp);
+					stack.push(lextable.table[i]);
 				break;
 			case MUL:
 			case DIV:
 				if (stack.empty())
 				{
-					stack.push(exp);
-					expression = true;
+					stack.push(lextable.table[i]);
 				}
 				else if
 					(
-						stack.top() == MUL ||
-						stack.top() == DIV
-						)
+						stack.top().expression[0] == MUL ||
+						stack.top().expression[0] == DIV
+					)
 				{
 					operands.push_back(stack.top());
 					stack.pop();
-					stack.push(exp);
+					stack.push(lextable.table[i]);
 				}
 				else
-					stack.push(exp);
+					stack.push(lextable.table[i]);
 				break;
 			case SEMICOLON:
+			case LEX_SQUARE_RIGHT:
 				while (!stack.empty())
 				{
 					operands.push_back(stack.top());
@@ -153,23 +134,32 @@ namespace PN {
 					lextable.table[i].lexema[0] == LEFTHESIS ||
 					lextable.table[i].lexema[0] == RIGHTESIS
 					)
-					operands.push_back(exp);
+					operands.push_back(lextable.table[i]);
 				else
-					return false;
+					return position + 1;
 				break;
 			}
 
 			}
+			position = i;
 		}
-		if (!expression)
-			return false;
-
-		while (!operands.empty()) {
-
-			cout << operands.front();
+		
+		for (int i = position2; !operands.empty(); i++) {
+			
+			lextable.table[i] = operands.front();
 			operands.pop_front();
-
+			
 		}
-		return true;
+		//
+while (lextable.table[position2].lexema[0] != LEX_SEMICOLON) {
+		//
+	if (lextable.table[position2].lexema[0] == LEFTHESIS || lextable.table[position2].lexema[0] == RIGHTESIS)
+		//
+		lextable.table[position2].lexema[0] = '@';
+		//
+	position2++;
+		//
+}
+		return position+1;
 	}
 }

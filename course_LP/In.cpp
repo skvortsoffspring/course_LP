@@ -27,14 +27,12 @@ namespace In
 		{
 			if (fin.eof())
 				break;
-
-			if (symbol ==ENDL)
+			if (symbol == ENDL)
 			{
 				in.lines++;
-				in.text[positionArr] =ENDL;
+				in.text[positionArr] = ENDL;
 				positionErr = 0;
 			}
-
 			switch (in.code[symbol])
 			{
 				case IN::F:
@@ -104,7 +102,10 @@ namespace In
 					break;
 				}
 			}
+
+
 		}
+		in.text[positionArr++] = LEX_RIGHTBRACE;
 		if (literal)														//
 			throw ERROR_THROW_IN(114, in.lines, positionErr);				//
 		in.text[positionArr] = STR_ENDL;

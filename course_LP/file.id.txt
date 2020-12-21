@@ -1,34 +1,57 @@
-ID table, modified time: 16-12-2020 --среда-- 22:02:49 
+ID table, modified time: 22-12-2020 --вторник-- 01:49:19 
 
 visible             constant            type                value int           value str           idxfirstLE          
+main                $size                                                                            TI[181]
 
 visible             variable            type                value int           value str           idxfirstLE          
-main                y                   long                0                   -                    33
+sort                i                   long                0                   -                    14
+sort                j                   long                0                   -                    19
+sort                temp                long                0                   -                    24
+maxx                j                   long                0                   -                    118
+maxx                arrmax              long                0                   -                    121
+main                hello               string              -                   0                    163
+main                i                   long                0                   -                    168
+main                j                   long                0                   -                    173
+main                temp                long                0                   -                    178
 
 visible             function            type                idfirstLE           
-                    main                long                0                   
+                    sort                long                2                   
+                    maxx                long                106                 
+                    main                long                160                 
 
 visible             ext function        type                idxFirstLE          
-main                writeline           string              39                  
+main                write               string              259                 
+main                writeline           string              272                 
+main                write               string              291                 
 
 visible             array               type                idxFirstLE          
-main                x                   long                3                   
+main                h                   long                186                 
 
 visible             parameter           type                idxfirstle          
+sort                size                long                10                  
+maxx                size                long                114                 
 
 type                size(string)        idxfirstle          value
-long                ------              5                   20                  
-long                ------              9                   0                   
-long                ------              11                  5                   
-long                ------              13                  2                   
-long                ------              15                  13                  
-long                ------              17                  4                   
-long                ------              19                  15                  
-long                ------              21                  6                   
-long                ------              23                  7                   
-long                ------              25                  8                   
-long                ------              27                  91                  
-long                ------              29                  1111                
-long                ------              50                  1                   
-long                ------              59                  10                  
-Всего идентификаторов: 18                  
+long                ------              16                  0                   
+long                ------              45                  1                   
+long                ------              86                  8                   
+string              5                   165                 hello               
+long                ------              183                 1033                
+long                ------              192                 10                  
+long                ------              194                 81                  
+long                ------              196                 1101                
+long                ------              198                 68                  
+long                ------              200                 98                  
+long                ------              202                 11                  
+long                ------              204                 12                  
+long                ------              208                 45                  
+long                ------              220                 40                  
+long                ------              224                 18                  
+long                ------              226                 6                   
+long                ------              228                 9                   
+long                ------              232                 42                  
+long                ------              234                 72                  
+long                ------              236                 4                   
+long                ------              238                 15                  
+string              15                  261                 max  element =      
+Всего идентификаторов: 43                  

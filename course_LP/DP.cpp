@@ -22,15 +22,20 @@ namespace GM
 					throw ERROR_THROW_LINE(135, data.count_lines);
 				break;
 			}
-																			// special symbols digital literal or identificator
-			if (*end == '.')									// , - float
+			//if (*start == '|') {
+			//	lextable->table->sn++;
+			//	start++;
+			//	end = start;
+			//	continue;
+			//}
+			if (*end == '.')														// , - float
 				if (isdigit(*(end + 1)))
 					end++;
-			else if((*end == 'x' || *end == 'b') && isdigit(*(end+1)))		// x- heximal, b- binary
+			else if((*end == 'x' || *end == 'b') && isdigit(*(end+1)))				// x- heximal, b- binary
 				end++;
 			else if(*end == '_')													// _ - identificator
 				end++;
-			else if(*start== '$')													// _ - identificator
+			else if(*start == '$')													// _ - identificator
 				end++;
 
 			switch (*start)
@@ -60,15 +65,15 @@ namespace GM
 					start++;
 					data.negativeValue = true;
 				}
-				/*else if(*(start + 1) == '-') {
+				else if(*(start + 1) == '-') {
 					end++;
-				}*/
+				}
 				break;
-			/*case '+':
+				case '+':
 				if (*(start + 1) == '+') {
 					end++;
 				}
-				break;*/
+				break;
 			case '{':
 				data.braces++;
 				break;
@@ -123,13 +128,19 @@ namespace GM
 					if (data.braces)
 						throw ERROR_THROW_LINE(135, data.count_lines);
 					break;
+				case LEX_SQUARE_LEFT:
+					if (idtable->table[idtable->current_size-1].idtype == IT::P)
+						idtable->table[idtable->current_size-1].idtype = IT::PA;
+					break;
 				case LEX_RIGHTESIS:
+				{
 					data.visibility_in_parametres = false;
 					data.positionfuncID = -1;
 					break;
+				}
 				case LEX_LITERAL:
 					if (data.visibility_in_parametres)
-						idtable->table[idtable->current_size].idtype = IT::P;
+					idtable->table[idtable->current_size].idtype = IT::P;
 					ID = LiteralCreate(*idtable,*lextable, data.string, data.count_lines, data.negativeValue, data.visibility_in_parametres);
 					if (ID == TI_NULLIDX) {
 						entryLT.idxTI = idtable->current_size;
@@ -141,6 +152,7 @@ namespace GM
 						idtable->table[idtable->current_size] = IT::Reset();
 					}
 					break;
+				case LEX_INCORDEC:
 				case EXPRESSIONS:
 				case LOGICALS:
 				case BINARY:
@@ -163,7 +175,7 @@ namespace GM
 							throw ERROR_THROW_LINE(127, data.count_lines);			// не указан тип для функции
 
 					IdentificatorCreate(idtable,lextable, data, stream);
-					if ((bool)ENTRY.iddatatype || data.token == LEX_MAIN)
+					if ((ENTRY.iddatatype || data.token == LEX_MAIN))
 					{
 						entryLT.idxTI = idtable->current_size;
 					}
@@ -211,7 +223,9 @@ namespace GM
 
 		switch (ENTRY.idtype) {
 		case IT::IDTYPE::F:
-		{
+		{	
+			//if(ENTRY.iddatatype == IT::STR&& ENTRY.iddatatype!=IT::NC)
+			//	throw ERROR_THROW_LINE(149, data.count_lines)
 			ID = IT::IsId(*idtable,*lextable, data.string, data.prefix, data.count_lines,&data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
 			if (strlen(data.string) > PREFIX_SIZE)
 				*stream << "Идентификатор функции (" << data.string << ") усечен!\n";
@@ -241,7 +255,7 @@ namespace GM
 				
 				if (data.visibility_in_parametres) {
 					ENTRY.idtype = IT::IDTYPE::P;
-					idtable->table[data.positionfuncID].parametresfunc++;
+					idtable->table[data.positionfuncID].value.vint++;
 					if (strlen(data.string) > PREFIX_SIZE)
 						*stream << "Идентификатор параметра (" << data.string << ") усечен!\n";
 				}
@@ -264,8 +278,7 @@ namespace GM
 				strncpy_s(ENTRY.id, data.string, ID_MAXSIZE);
 				strncpy_s(ENTRY.prefix, data.prefix, PREFIX_SIZE);
 				ID = IT::IsId(*idtable, *lextable, data.string, data.prefix, data.count_lines, &data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
-				if(ID == TI_NULLIDX)
-					throw ERROR_THROW_LINE(133, data.count_lines)
+				if (ID == TI_NULLIDX) throw ERROR_THROW_LINE(133, data.count_lines);
 			}
 			break;
 		}
@@ -805,6 +818,23 @@ namespace GM
 				return LEX_MAIN;
 			}
 		}
+		case 'o':
+		{
+			FST::FST graph_overflow(string, 9,
+				FST::NODE(1, FST::RELATION('o', 1)),
+				FST::NODE(1, FST::RELATION('v', 2)),
+				FST::NODE(1, FST::RELATION('e', 3)),
+				FST::NODE(1, FST::RELATION('r', 4)),
+				FST::NODE(1, FST::RELATION('f', 5)),
+				FST::NODE(1, FST::RELATION('l', 6)),
+				FST::NODE(1, FST::RELATION('o', 7)),
+				FST::NODE(1, FST::RELATION('w', 8)),
+				FST::NODE());
+			if (result = execute(graph_overflow)) {
+				return LEX_OVERFLOW;
+				break;
+			}
+		}
 		case 'r':
 		{
 			FST::FST graph_randome(string, 8,
@@ -819,7 +849,7 @@ namespace GM
 			if (result = execute(graph_randome)) {
 				entry->idtype = IT::IDTYPE::E;
 				entry->iddatatype = IT::IDDATATYPE::LONG;
-				//entry->value.vint = 2;
+				entry->value.vint = 2;
 				return LEX_ID;
 				break;
 			}
@@ -1039,7 +1069,7 @@ namespace GM
 		{
 			FST::FST graph_literal(string, 3,
 				FST::NODE(1,FST::RELATION('\'', 1)),
-				FST::NODE(146,
+				FST::NODE(151,
 					FST::RELATION('a', 1),
 					FST::RELATION('b', 1),
 					FST::RELATION('c', 1),
@@ -1048,6 +1078,8 @@ namespace GM
 					FST::RELATION('f', 1),
 					FST::RELATION('g', 1),
 					FST::RELATION('h', 1),
+					FST::RELATION('i', 1),
+					FST::RELATION('j', 1),
 					FST::RELATION('k', 1),
 					FST::RELATION('l', 1),
 					FST::RELATION('m', 1),
@@ -1073,6 +1105,7 @@ namespace GM
 					FST::RELATION('G', 1),
 					FST::RELATION('H', 1),
 					FST::RELATION('I', 1),
+					FST::RELATION('J', 1),
 					FST::RELATION('L', 1),
 					FST::RELATION('K', 1),
 					FST::RELATION('L', 1),
@@ -1183,6 +1216,8 @@ namespace GM
 					FST::RELATION('#', 1),
 					FST::RELATION('&', 1),
 					FST::RELATION('@', 1),
+					FST::RELATION('[', 1),
+					FST::RELATION(']', 1),
 					FST::RELATION('\\',1),
 					FST::RELATION('~',1),
 					FST::RELATION('\'',2)),

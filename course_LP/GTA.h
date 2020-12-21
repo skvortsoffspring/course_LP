@@ -1,6 +1,6 @@
 #pragma once
 #include <vector>
-#define FILE			"source.asm"								// file for generation
+#define FILE			*file										// file for generation
 #define COMMENTLITERAL	";------------- LITERALS -------------;\n"
 #define COMMENTPROTO	";------------ PPOTO USER ------------;\n"
 #define COMMENTCODE		";--------------- CODE ---------------;\n"
@@ -15,7 +15,7 @@
 						"erroverflow 			BYTE      \"Error Integer overflow\",str_end\n"			\
 						"errdivbyzero			BYTE      \"Integer division by zero\",str_end\n"   \
 						"errrandomefunc			BYTE      \"Error parametres second less first or equals\",str_end\n"   \
-						"erroverflowbyte		BYTE      \"Error byte overflow\",str_end\n"   \
+						"erroverflowbyte  		BYTE      \"Error byte overflow\",str_end\n"   \
 						"errorid1				DWORD	  1\n"									\
 						"errorid2				DWORD	  2\n"									\
 						"errorid3				DWORD	  3\n"									\
@@ -48,16 +48,16 @@
 				"GetRandomNumber  		PROTO : DWORD, : DWORD\n"							\
 				"ExitProcess  			PROTO : DWORD\n\n"
 
-#define EXIT	"push 0\n"																	\
-				"call ExitProcess\n"
+#define EXIT	"\tpush 0\n"																	\
+				"\tcall ExitProcess\n"
 
-#define ERROR_ASM "jmp OK\n"																\
-				"errordivzero:\n"															\
-				"invoke @error, errorid1\n"													\
-				"overflow:\n"																\
-				"invoke @error, errorid2\n"													\
-				"overflowbyte:\n"																\
-				"invoke @error, errorid4\n"													\
+#define ERROR_ASM "\tjmp OK\n"																\
+				"\terrordivzero:\n"															\
+				"\tinvoke @error, errorid1\n"													\
+				"\toverflow:\n"																\
+				"\tinvoke @error, errorid2\n"													\
+				"\toverflowbyte:\n"																\
+				"\tinvoke @error, errorid4\n"													\
 				"OK:\n"
 #define DEVISION_OVERFLOW	";--- division overflow ---;\n"
 	
@@ -69,7 +69,7 @@
 #define COLON			":"
 #define UNDERLINE		"_"
 #define STR_END			"str_end\n"
-#define LITERALS			"literal"
+#define LITERALS		"literal"
 #define ID_IN_IDTABLE	"idtable->table[lextable->table[poslenta].idxTI].id"
 #define TYPE_IN_IDTABLE	"idtable->table[lextable->table[poslenta].idxTI].idtype"
 #pragma endregion
@@ -77,107 +77,125 @@
 
 #pragma region commandsASM
 // standarts
-#define PROC		"PROC"
-#define ENDP		"ENDP\n"
-#define START		"START :\n"
-#define RET			"ret\n"
-#define EQU			"EQU"
+#define PROC			"PROC"
+#define ENDP			"ENDP\n"
+#define START			"START :\n"
+#define RET				"ret\n"
+#define EQU				"EQU"
+#define CALL			"call "
+#define PUSH_OFFSET		"\tpush offset "
+#define PUSH_LENGHTOFF "\tpush lengthof "
+#define CLD				"\tcld\n"
+#define LEA_EDI			"\tlea edi, "
+#define REP_MOVSB		"\trep movsb\n"
 // errors macroses
-#define OVERFLOW_ASM		"jc overflow\n"
+#define OVERFLOW_ASM		"\tjc overflow\n"
 
-#define OVERFLOW_ASM_BYTE	"cmp eax, 0100h\n"\
-							"jge overflowbyte\n"
-
-// registers
-#define EAX			", eax"
-#define AL			", al"
-#define EDX			"edx"
-#define DL			", dl"
-// stack
-#define PUSH		"push "
-#define PUSH_EAX	"push eax\n"
-#define PUSH_EBX	"push ebx\n"
-#define PUSH_ECX	"push ecx\n"
-#define PUSH_EDX	"push edx\n"
-#define POP			"pop "
-#define POP_EAX		"pop eax\n"
-#define POP_EBX		"pop ebx\n"
-#define POP_ECX		"pop ecx\n"
-#define POP_EDX		"pop edx\n"
-
-// mov
-#define MOV			"mov "
-#define MOV_EAX		"mov eax, "
-#define MOV_EBX		"mov ebx, "
-#define MOV_ECX		"mov ecx, "
-#define MOV_EDX		"mov edx, "
-#define MOV_AL		"mov al, "
-#define MOV_BL		"mov bl, "
-#define MOV_CL		"mov cl, "
-#define MOV_DL		"mov dl, "
+#define OVERFLOW_ASM_BYTE	"\tcmp eax, 0100h\n"\
+							"\tjge overflowbyte\n"
+// increment decrement
+#define INCREMENT	"\tinc "
+#define DECREMENT	"\tdec "
+// registers		 \t
+#define EAX			"\t, eax"
+#define AL			"\t, al"
+#define EDX			"\tedx"
+#define DL			"\t, dl"
+// stack			 \t
+#define PUSH		"\tpush "
+#define PUSH_EAX	"\tpush eax\n"
+#define PUSH_EBX	"\tpush ebx\n"
+#define PUSH_ECX	"\tpush ecx\n"
+#define PUSH_EDX	"\tpush edx\n"
+#define POP			"\tpop "
+#define POP_EAX		"\tpop eax\n"
+#define POP_EBX		"\tpop ebx\n"
+#define POP_ECX		"\tpop ecx\n"
+#define POP_EDX		"\tpop edx\n"
+#define POP_ESI		"\tpop esi\n"
+					
+// mov				 
+#define MOV			"\tmov "
+#define MOV_EAX		"\tmov eax, "
+#define MOV_EBX		"\tmov ebx, "
+#define MOV_ECX		"\tmov ecx, "
+#define MOV_EDX		"\tmov edx, "
+#define MOV_AL		"\tmov al, "
+#define MOV_BL		"\tmov bl, "
+#define MOV_CL		"\tmov cl, "
+#define MOV_DL		"\tmov dl, "
+#define MOV_BL_AL	"\tmov bl, al\n"
 
 //operations long
-#define ADD_EAX_EBX "add eax, ebx\n"	// сложить
-#define ADD_EBX_ECX "add ebx, ecx\n"	// сложить
-#define ADD_ECX_EDX "add ecx, edx\n"	// сложить
-
-#define SUB_EAX_EBX "sub eax, ebx\n"	// вычесть
-#define SUB_EBX_ECX "sub ebx, ecx\n"	// вычесть
-#define SUB_ECX_EDX "sub ecx, edx\n"	// вычесть
-
-#define DIV_EAX_EDX "idiv edx\n"		// делелить
-#define DIV_EAX_ECX "idiv ecx\n"		// делелить
-#define DIV_EAX_EBX "idiv ebx\n"		// делелить
-#define DIV_EBX_ECX "idiv ebx, ecx\n"	// делелить
-#define DIV_ECX_EDX "idiv ecx, edx\n"	// делелить
-
-#define MUL_EAX_EBX "imul ebx\n"		// умножить
-#define MUL_EBX_ECX "imul ebx, ecx\n"	// умножить
-#define MUL_ECX_EDX "imul ecx, edx\n"	// умножить
+#define ADD_EAX_EBX "\tadd eax, ebx\n"	// сложить
+#define ADD_EBX_ECX "\tadd ebx, ecx\n"	// сложить
+#define ADD_ECX_EDX "\tadd ecx, edx\n"	// сложить
+					 
+#define SUB_EAX_EBX "\tsub eax, ebx\n"	// вычесть
+#define SUB_EBX_ECX "\tsub ebx, ecx\n"	// вычесть
+#define SUB_ECX_EDX "\tsub ecx, edx\n"	// вычесть
+					 
+#define DIV_EAX_EDX "\tidiv edx\n"		// делелить
+#define DIV_EAX_ECX "\tidiv ecx\n"		// делелить
+#define DIV_EAX_EBX "\tidiv ebx\n"		// делелить
+#define DIV_EAX_ECX	"\tidiv ecx\n"		// делелить
+					 
+#define MUL_EAX_EBX "\timul ebx\n"		// умножить
+#define MUL_EBX_ECX "\timul ebx, ecx\n"	// умножить
+#define MUL_ECX_EDX "\timul ecx, edx\n"	// умножить
+#define MUL_EAX_EDX "\timul eax, edx\n"	// умножить
+#define MUL_EAX_ECX "\timul eax, ecx\n"	// умножить
+#define MUL_ECX		"\timul ecx,"			// умножить
+#define MUL_EAX		"\timul eax,"			// умножить
 
 //operations byte
-#define ADD_AL_BL	"add al, bl\n"		// сложить
-#define SUB_AL_BL	"sub al, bl\n"		// вычесть
-#define DIV_AL_BL	"idiv al, bl\n"		// делить
-#define MUL_AL_BL	"imul al, bl\n"		// умножить
+#define ADD_AL_BL	"\tadd al, bl\n"		// сложить
+#define SUB_AL_BL	"\tsub al, bl\n"		// вычесть
+#define DIV_AL_BL	"\tidiv al, bl\n"		// делить
+#define MUL_AL_BL	"\timul al, bl\n"		// умножить
+#define ADD_ECX		"\timul ecx, \n"		// умножить
+#define DIV_EDX		"\timul edx\n";
+#define DIV_ECX		"\timul ecx\n";
 
 // logic
-#define XOR_EAX			"xor eax, eax\n"
-#define XOR_EBX			"xor ebx, ebx\n"
-#define XOR_ECX			"xor ecx, ecx\n"
-#define XOR_EDX			"xor edx, edx\n"
-// cmp
-#define CMP_EAX_EBX		"cmp eax, ebx	\n"
-#define CMP_EBX_ECX		"cmp ebx, ecx	\n"
-#define CMP_ECX_EDX		"cmp ecx, edx	\n"
-#define CMP_EAX_EDX		"cmp eax, edx	\n"
-// array 
-#define MOV_ECX_ADDR	"mov ecx, offset "
-#define MOV_EDX_ADDR	"mov edx, offset "
-
-#define MOV_EBX_TYPE	"mov ebx, type "
-#define IMUL_EAX_TYPE	"imul eax, type "
-#define MOV_ECX_EAX_EDX "mov [ecx + eax], edx\n"
-#define	MOV_EDX_EAX		"mov edx, eax\n"
-#define	MOV_EAX_ECX		"mov eax, ecx\n"
-#define	MOV_EAX_EBX		"mov eax, ebx\n"
-#define	MOV_EBX_EAX		"mov ebx, eax\n"
-#define	MOV_EBX_EDX		"mov ebx, edx\n"
-#define	MOV_ECX_EAX		"mov ecx, eax\n"
-#define ADD_ECX_EAX		"add ecx, eax\n"
-#define	MOV_EAX_EDX		"mov eax, edx\n"
-#define ADD_EAX_EDX		"add eax, edx\n"
-#define PTR				"ptr "
+#define XOR_EAX			"\txor eax, eax\n"
+#define XOR_EBX			"\txor ebx, ebx\n"
+#define XOR_ECX			"\txor ecx, ecx\n"
+#define XOR_EDX			"\txor edx, edx\n"
+// cmp					 
+#define CMP_EAX_EBX		"\tcmp eax, ebx	\n"
+#define CMP_EBX_ECX		"\tcmp ebx, ecx	\n"
+#define CMP_ECX_EDX		"\tcmp ecx, edx	\n"
+#define CMP_EAX_EDX		"\tcmp eax, edx	\n"
+// array 				 
+#define MOV_ECX_ADDR	"\tmov ecx, offset "
+#define MOV_EAX_ADDR	"\tmov ecx, offset "
+#define MOV_EDX_ADDR	"\tmov edx, offset "
+						 
+#define MOV_EBX_TYPE	"\tmov ebx, type "
+#define IMUL_EAX_TYPE	"\timul eax, type "
+#define MOV_ECX_EAX_EDX "\tmov [ecx + eax], edx\n"
+#define	MOV_EDX_EAX		"\tmov edx, eax\n"
+#define	MOV_EAX_ECX		"\tmov eax, ecx\n"
+#define	MOV_EAX_EBX		"\tmov eax, ebx\n"
+#define	MOV_EBX_EAX		"\tmov ebx, eax\n"
+#define	MOV_EBX_EDX		"\tmov ebx, edx\n"
+#define	MOV_ECX_EAX		"\tmov ecx, eax\n"
+#define ADD_ECX_EAX		"\tadd ecx, eax\n"
+#define	MOV_EAX_EDX		"\tmov eax, edx\n"
+#define ADD_EAX_EDX		"\tadd eax, edx\n"
+#define PTR				"\ptr "
 #define PREFERRED_ECX	"[ecx]\n"
 #define PREFERRED_ECX_C	"[ecx]"
+#define PREFERRED_EAX_C	"[eax]"
 // exceptions
 
-#define CMP_EBX_0	"cmp ebx, 0\n"\
-					"je errordivzero\n"
-#define CMP_ECX_0	"cmp ecx, 0\n"\
-					"je errordivzero\n"
-#define CMP_EDX_0	"cmp edx, 0\n"\
-					"je errordivzero\n"
+#define CMP_EBX_0	"\tcmp ebx, 0\n"\
+					"\tje errordivzero\n"
+#define CMP_ECX_0	"\tcmp ecx, 0\n"\
+					"\tje errordivzero\n"
+#define CMP_EDX_0	"\tcmp edx, 0\n"\
+					"\tje errordivzero\n"
 ///////////////////////////////////////
 #define ENDMAIN "end main"
 #pragma endregion
@@ -216,7 +234,7 @@ constexpr auto WRITELINE =
 "call GetStdHandle\n"
 "mov esi, pstr\n"
 "mov edi, -1\n"
-"count :\n"
+"count:\n"
 "inc edi\n"
 "cmp byte ptr[esi + edi], 0\n"
 "jne count\n"
@@ -276,39 +294,39 @@ constexpr auto INT_TO_CHAR =
 
 constexpr auto FUNCTION_ERROR = 
 "@error proc, errorid : dword\n"
-"mov eax, errorid\n"
-"cmp errorid1, eax\n"
-"je testerror1\n"
-"invoke write, addr erroverflow\n"
-"jmp enderror\n"
-"testerror1:\n"
-"cmp errorid2,eax\n"
-"je testerror2\n"
+"\tmov eax, errorid\n"
+"\tcmp errorid1, eax\n"
+"\tje testerror1\n"
+"\tinvoke write, addr erroverflow\n"
+"\tjmp enderror\n"
+"\ttesterror1:\n"
+"\tcmp errorid2,eax\n"
+"\tje testerror2\n"
 "invoke write, addr errdivbyzero\n"
-"jmp enderror\n"
+"\tjmp enderror\n"
 "testerror2:\n"
-"cmp errorid3,eax\n"
-"je testerror3\n"
-"invoke write, addr errrandomefunc\n"
-"jmp enderror\n"
+"\tcmp errorid3,eax\n"
+"\tje testerror3\n"
+"\tinvoke write, addr errrandomefunc\n"
+"\tjmp enderror\n"
 "testerror3:\n"
-"cmp errorid4,eax\n"
+"\tcmp errorid4,eax\n"
 "je testerror4\n"
-"invoke write, addr erroverflowbyte\n"
-"jmp enderror\n"
+"\tinvoke write, addr erroverflowbyte\n"
+"\tjmp enderror\n"
 "testerror4:\n"
 "enderror:"
-"push errorid\n"
-"call ExitProcess\n"
+"\tpush errorid\n"
+"\tcall ExitProcess\n"
 "ret\n"
 "@error endp\n\n";
 
 constexpr auto RANDOME_FUNC =
-"GetRandomNumber  proc uses eax ebx ecx edi esi,\n"
-"min : DWORD,\n" 
-"max : DWORD\n"
-"mov eax, min\n"
-"cmp eax, max\n"
+"randome  proc,\n"
+"@min : DWORD,\n" 
+"@max : DWORD\n"
+"mov eax, @min\n"
+"cmp eax, @max\n"
 "jae errorparametres\n"
 "mov			eax, [seed]\n"
 "or eax, eax\n"
@@ -333,22 +351,18 @@ constexpr auto RANDOME_FUNC =
 "mov		eax, edx\n"
 "mov[seed], edx\n"
 "xor edx, edx\n"
-"mov		ebx, [max]\n"
-"sub		ebx, [min]\n"
+"mov		ebx, [@max]\n"
+"sub		ebx, [@min]\n"
 "inc		ebx\n"
 "div		ebx\n"
 "mov		eax, edx\n"
-"add		eax, [min]\n"
-"mov[seed], eax\n"
-"pop		edx\n"
-"pop ecx\n"
-"pop ebx\n"
+"add		eax, [@min]\n"
 "jmp OK\n"																\
 "errorparametres:\n"															\
 "invoke @error, errorid3\n"													\
 "OK:\n"
 "ret\n"
-"GetRandomNumber endp\n";
+"randome endp\n";
 
 namespace GTA 
 {
@@ -359,7 +373,7 @@ namespace GTA
 	void PrintProtos(LT::LexTable*, IT::IdTable*, std::vector<int>&);
 	void PrintFunctions(LT::LexTable*, IT::IdTable*, std::vector<int>&);
 	void PrintVariables(LT::LexTable*, IT::IdTable*);
-	int ProcessingDeclaration(LT::LexTable*, IT::IdTable*, int, bool,bool,bool);
+	int ProcessingDeclaration(LT::LexTable*, IT::IdTable*, int, bool,bool,bool,bool);
 	void PrintChain(LT::LexTable*, IT::IdTable*, int);
 	void PrintConst(LT::LexTable*, IT::IdTable*);
 	int FillArray(LT::LexTable*, IT::IdTable*, int);
@@ -367,6 +381,8 @@ namespace GTA
 	int PrintCycles(LT::LexTable*, IT::IdTable*, int);
 	int PrintWriteFunctions(LT::LexTable*, IT::IdTable*, int);
 	int PrintСondition(LT::LexTable*, IT::IdTable*, int, bool, bool);
+	int PrintCallFunctions(LT::LexTable*, IT::IdTable*, int);
+	int PrintReturn(LT::LexTable*, IT::IdTable*, int);
 
 
 }

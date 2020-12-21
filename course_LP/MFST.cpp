@@ -142,7 +142,6 @@ bool MFST::MFST::resetstate()
 		nrule = state.nrule;
 		nrulechain = state.nrulechain;
 		storestate.pop();
-
 		MFST_TRACE5("RESTATE")
 		MFST_TRACE2
 	}

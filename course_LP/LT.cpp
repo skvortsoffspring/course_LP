@@ -36,7 +36,7 @@ namespace LT							// таблица лексем
 		{
 			fout << i << ">>\t";
 			if (uqu != lextable->table[i].sn) {
-				fout << std::endl;
+				//fout << std::endl;
 				uqu = lextable->table[i].sn;
 			}
 			fout << lextable->table[i].lexema;

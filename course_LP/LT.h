@@ -3,6 +3,7 @@
 #define LEXEMA_FIXSIZE		1			// size length lexema
 #define	LT_MAXSIZE			4096		// maximal size lexem	
 #define	LT_TI_NULLXDX		0xffffffff	// not link table ID			
+#define LEX_OVERFLOW		'o'			// on/off control overflow
 #define LEX_BOOL			't'			// type data bool
 #define	LEX_LONG			't'			// type data long
 #define	LEX_CHAR			't'			// type data byte
