@@ -1,0 +1,13 @@
+﻿  Assembling random.asm...
+random.asm(1): error A2008: syntax error : .
+random.asm(2): error A2008: syntax error : .
+random.asm(3): error A2008: syntax error : .
+random.asm(30): error A2070: invalid instruction operands
+random.asm(33): error A2070: invalid instruction operands
+random.asm(34): error A2070: invalid instruction operands
+random.asm(37): error A2070: invalid instruction operands
+random.asm(50): error A2008: syntax error : invoke
+random.asm(42): error A2009: syntax error in expression
+random.asm(43): error A2009: syntax error in expression
+random.asm(47): error A2009: syntax error in expression
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets(70,5): error MSB3721: выход из команды "ml64.exe /c /nologo /Zi /Fo"x64\Debug\random.obj" /W3 /errorReport:prompt  /Tarandom.asm" с кодом "1".

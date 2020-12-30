@@ -1,4 +1,5 @@
 #pragma once
+
 #define ERROR_THROW(id) Error::geterror(id);	                        //throw     ERROR_THROW(id)
 #define ERROR_THROW_LINE(id,l) Error::geterrorline(id,l);               //throw     ERROR_THROW(id, строка)
 #define ERROR_THROW_IN(id, l, c) Error::geterrorin(id, l, c);	        //throw     ERROR_THROW(id, строка, колонка)

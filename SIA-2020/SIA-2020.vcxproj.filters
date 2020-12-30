@@ -15,7 +15,7 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <MASM Include="..\course_LP\source.asm">
+    <MASM Include="source.asm">
       <Filter>Файлы заголовков</Filter>
     </MASM>
   </ItemGroup>

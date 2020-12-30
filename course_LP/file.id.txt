@@ -1,57 +1,129 @@
-ID table, modified time: 22-12-2020 --вторник-- 01:49:19 
+ID table, modified time: 30-12-2020 --среда-- 14:56:38 
 
-visible             constant            type                value int           value str           idxfirstLE          
-main                $size                                                                            TI[181]
+visible     constant    type        value int   value str   idxfirstLE  
+main        $size                                            TI[211]
 
-visible             variable            type                value int           value str           idxfirstLE          
-sort                i                   long                0                   -                    14
-sort                j                   long                0                   -                    19
-sort                temp                long                0                   -                    24
-maxx                j                   long                0                   -                    118
-maxx                arrmax              long                0                   -                    121
-main                hello               string              -                   0                    163
-main                i                   long                0                   -                    168
-main                j                   long                0                   -                    173
-main                temp                long                0                   -                    178
+visible     ptr         type        value int   value str   idxfirstLE  
+sort        x           long        0           -            5
+replacestr  x           string      -           0            109
+replacestr  m           string      -           0            112
+summarr     x           long        0           -            153
 
-visible             function            type                idfirstLE           
-                    sort                long                2                   
-                    maxx                long                106                 
-                    main                long                160                 
+visible     variable    type        value int   value str   idxfirstLE  
+sort        i           long        0           -            14
+sort        j           long        0           -            19
+sort        temp        long        0           -            24
+replacestr  length      byte        0x00        -            116
+replacestr  i           byte        0x00        -            119
+summarr     i           byte        0x00        -            159
+summarr     summ        long        0           -            162
+summarr     temp        long        0           -            165
+main        i           long        0           -            196
+main        j           long        0           -            201
+main        flag        bool        0           -            206
+main        wlock       string      -           0            216
+main        mtama       string      -           0            221
+main        hello       string      -           0            226
+main        space       string      -           0            231
+main        world       string      -           0            236
 
-visible             ext function        type                idxFirstLE          
-main                write               string              259                 
-main                writeline           string              272                 
-main                write               string              291                 
+visible     function    type        idfirstLE   
+            sort        long        2           
+            replacestr  string      106         
+            summarr     long        150         
+            main        long        193         
 
-visible             array               type                idxFirstLE          
-main                h                   long                186                 
+visible     ext functiontype        idxFirstLE  
+main        write       string      274         
+main        write       string      281         
+main        write       string      319         
+main        write       string      323         
+main        write       string      330         
+main        write       string      361         
+main        write       string      365         
+main        write       string      369         
+main        write       string      373         
+main        write       string      383         
+main        write       string      387         
+main        writeline   string      391         
+main        write       string      409         
+main        write       string      421         
+main        write       string      442         
+main        write       string      454         
+main        write       string      470         
+main        write       string      474         
+main        writeline   string      478         
+main        random      long        492         
+main        write       string      516         
+main        write       string      545         
+main        write       string      549         
+main        writeline   string      553         
+main        writeline   string      565         
+main        write       string      570         
+main        write       string      574         
+main        strlen      long        592         
+main        write       string      597         
+main        write       string      604         
+main        write       string      608         
+main        writeline   string      612         
+main        write       string      617         
+main        strcat      string      622         
+main        strcat      string      629         
+main        writeline   string      636         
+main        write       string      641         
+main        strlen      long        645         
+main        write       string      651         
+main        write       string      655         
+main        writeline   string      660         
+main        strcopy     string      662         
 
-visible             parameter           type                idxfirstle          
-sort                size                long                10                  
-maxx                size                long                114                 
+visible     array       type        idxFirstLE  
+main        arry        byte        241         
+main        arrx        long        247         
 
-type                size(string)        idxfirstle          value
-long                ------              16                  0                   
-long                ------              45                  1                   
-long                ------              86                  8                   
-string              5                   165                 hello               
-long                ------              183                 1033                
-long                ------              192                 10                  
-long                ------              194                 81                  
-long                ------              196                 1101                
-long                ------              198                 68                  
-long                ------              200                 98                  
-long                ------              202                 11                  
-long                ------              204                 12                  
-long                ------              208                 45                  
-long                ------              220                 40                  
-long                ------              224                 18                  
-long                ------              226                 6                   
-long                ------              228                 9                   
-long                ------              232                 42                  
-long                ------              234                 72                  
-long                ------              236                 4                   
-long                ------              238                 15                  
-string              15                  261                 max  element =      
-Всего идентификаторов: 43                  
+visible     parameter   type        idxfirstle  
+sort        size        long        10          
+
+type        size(string)idxfirstle  value
+long        ------      16          0           
+long        ------      45          1           
+long        ------      86          8           
+long        ------      141         2           
+long        ------      186         9           
+long        ------      213         10          
+string      7           218         warlock     
+string      11          223         murlakatama 
+string      5           228         hello       
+string      1           233                     
+string      5           238         world       
+long        ------      255         81          
+long        ------      257         111         
+long        ------      259         68          
+long        ------      261         98          
+long        ------      263         11          
+long        ------      265         12          
+long        ------      269         45          
+string      12          276         array long: 
+string      2           283         x[          
+string      2           287         ]:          
+string      1           294         ,           
+string      12          325         array sort: 
+string      22          375         summ alements array = 
+string      26          393         cycle in cicle and if else
+string      1           411         #           
+string      1           423         *           
+string      1           444         @           
+string      26          480         fill array byte for random
+long        ------      496         255         
+string      2           518         y[          
+string      37          555         #function call to replace characters#
+long        ------      588         15          
+long        ------      590         3           
+string      30          599         10*(2+2)*15/3+strlen(hello) = 
+string      26          614         #standart string function#
+string      17          619         standart strcat: 
+string      18          643         standart strlen : 
+string      18          657         standart strcopy: 
+string      6           664         string      
+string      4           666         work        
+Всего идентификаторов: 111         

@@ -22,12 +22,13 @@ namespace GM
 					throw ERROR_THROW_LINE(135, data.count_lines);
 				break;
 			}
-			//if (*start == '|') {
-			//	lextable->table->sn++;
-			//	start++;
-			//	end = start;
-			//	continue;
-			//}
+			if (*start == '|')
+			{
+				lextable->table->sn++;
+				start++;
+				end = start;
+				continue;
+			}
 			if (*end == '.')														// , - float
 				if (isdigit(*(end + 1)))
 					end++;
@@ -94,7 +95,6 @@ namespace GM
 			
 			}
 
-
 			if ((!alphaCirillicDigit(*end) || !alphaCirillicDigit(*start)) && !data.switch_string)		// не цифры, не символы и не литерал
 			{
 				if (data.negativeValue) {
@@ -114,7 +114,6 @@ namespace GM
 				data.count = lextable->size;
 				if (!data.token) 
 				{
-					
 					throw ERROR_THROW_LINE(128, data.count_lines);				// ни один автомат не сработал
 				}
 
@@ -224,8 +223,6 @@ namespace GM
 		switch (ENTRY.idtype) {
 		case IT::IDTYPE::F:
 		{	
-			//if(ENTRY.iddatatype == IT::STR&& ENTRY.iddatatype!=IT::NC)
-			//	throw ERROR_THROW_LINE(149, data.count_lines)
 			ID = IT::IsId(*idtable,*lextable, data.string, data.prefix, data.count_lines,&data.visibility_in_parametres, ENTRY.iddatatype, ENTRY.idtype);
 			if (strlen(data.string) > PREFIX_SIZE)
 				*stream << "Идентификатор функции (" << data.string << ") усечен!\n";
@@ -254,7 +251,10 @@ namespace GM
 			{
 				
 				if (data.visibility_in_parametres) {
-					ENTRY.idtype = IT::IDTYPE::P;
+					if(ENTRY.iddatatype == IT::STR)
+						ENTRY.idtype = IT::IDTYPE::PA;
+					else
+						ENTRY.idtype = IT::IDTYPE::P;
 					idtable->table[data.positionfuncID].value.vint++;
 					if (strlen(data.string) > PREFIX_SIZE)
 						*stream << "Идентификатор параметра (" << data.string << ") усечен!\n";
@@ -301,6 +301,7 @@ namespace GM
 				return LEX_NOT_EQUALS;
 				break;
 			}
+			break;
 		}
 		case '&':
 		{
@@ -313,7 +314,7 @@ namespace GM
 				return LEX_AND;
 				break;
 			}
-
+			break;
 		}
 		case '(':
 		{
@@ -326,7 +327,7 @@ namespace GM
 				return LEX_LEFTHESIS;
 				break;
 			}
-
+			break;
 		}
 		case ')':
 		{
@@ -338,7 +339,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_RIGHTESIS;
 			}
-
+			break;
 		}
 		case '[':
 		{
@@ -350,7 +351,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_SQUARE_LEFT;
 			}
-
+			break;
 		}
 		case ']':
 		{
@@ -362,7 +363,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_SQUARE_RIGHT;
 			}
-
+			break;
 		}
 		case '*':
 		{
@@ -375,7 +376,7 @@ namespace GM
 				return LEX_STAR;
 				break;
 			}
-
+			break;
 		}
 		case '+':
 		{
@@ -399,7 +400,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_PLUS;
 			}
-
+			break;
 		}
 		case ',':
 		{
@@ -412,7 +413,7 @@ namespace GM
 				return LEX_COMMA;
 				break;
 			}
-
+			break;
 		}
 		case '-':
 		{
@@ -436,7 +437,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_MINUS;
 			}
-
+			break;
 		}
 		case '/':
 		{
@@ -447,7 +448,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_DIRSLASH;
 			}
-
+			break;
 		}
 		case '1':
 		case '2':
@@ -572,7 +573,7 @@ namespace GM
 				entry->iddatatype = IT::IDDATATYPE::FLOAT;
 				return LEX_LITERAL;
 			}
-
+			break;
 		}
 		case ';':
 		{
@@ -583,7 +584,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_SEMICOLON;
 			}
-
+			break;
 		}
 		case '<':
 		{
@@ -611,13 +612,13 @@ namespace GM
 				return LEX_LESS;
 				break;
 			}
-			
+			break;
 		}
 		case '>':
 		{
 			FST::FST graph_r(string, 3,
-				FST::NODE(1,FST::RELATION('>', 1)),
-				FST::NODE(1,FST::RELATION('>', 2)),
+				FST::NODE(1, FST::RELATION('>', 1)),
+				FST::NODE(1, FST::RELATION('>', 2)),
 				FST::NODE());
 			if (result = execute(graph_r)) {
 				return LEX_SHR;
@@ -631,7 +632,7 @@ namespace GM
 				return LOGICALS;
 				break;
 			}
-			
+
 			FST::FST graph(string, 1,
 				FST::NODE(1,
 					FST::RELATION('>', 0)
@@ -640,7 +641,7 @@ namespace GM
 				return LEX_MORE;
 				break;
 			}
-
+			break;
 		}
 		case '=':
 		{
@@ -659,8 +660,9 @@ namespace GM
 			if (result = execute(graph_assign)) {
 				return LEX_ASSIGN;
 			}
-
-		}case '!':
+			break;
+		}
+		case '!':
 		{
 			FST::FST graph(string, 3,
 				FST::NODE(1, FST::RELATION('!', 1)),
@@ -669,7 +671,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_NOT_EQUALS;
 			}
-
+			break;
 		}
 		case '^':
 		{
@@ -681,6 +683,7 @@ namespace GM
 				return LEX_XOR;
 				break;
 			}
+			break;
 		}
 		case 'b':
 		{
@@ -706,6 +709,7 @@ namespace GM
 				return LEX_BOOL;
 				break;
 			}
+			break;
 		}
 		case 'e':
 		{
@@ -719,6 +723,7 @@ namespace GM
 				return LEX_ELSE;
 				break;
 			}
+			break;
 		}
 		case 'f':
 		{
@@ -761,7 +766,7 @@ namespace GM
 				entry->value.vbool = false;
 				return LEX_LITERAL;
 			}
-
+			break;
 		}
 		case 'i':
 		{
@@ -786,7 +791,7 @@ namespace GM
 				return LEX_IF;
 				break;
 			}
-
+			break;
 		}
 		case 'l':
 		{
@@ -801,6 +806,7 @@ namespace GM
 				return LEX_LONG;
 				break;
 			}
+			break;
 		}
 		case 'm':
 		{
@@ -817,6 +823,7 @@ namespace GM
 				entry->value.vint = 0;
 				return LEX_MAIN;
 			}
+			break;
 		}
 		case 'o':
 		{
@@ -834,19 +841,19 @@ namespace GM
 				return LEX_OVERFLOW;
 				break;
 			}
+			break;
 		}
 		case 'r':
 		{
-			FST::FST graph_randome(string, 8,
+			FST::FST graph_random(string, 7,
 				FST::NODE(1, FST::RELATION('r', 1)),
 				FST::NODE(1, FST::RELATION('a', 2)),
 				FST::NODE(1, FST::RELATION('n', 3)),
 				FST::NODE(1, FST::RELATION('d', 4)),
 				FST::NODE(1, FST::RELATION('o', 5)),
 				FST::NODE(1, FST::RELATION('m', 6)),
-				FST::NODE(1, FST::RELATION('e', 7)),
 				FST::NODE());
-			if (result = execute(graph_randome)) {
+			if (result = execute(graph_random)) {
 				entry->idtype = IT::IDTYPE::E;
 				entry->iddatatype = IT::IDDATATYPE::LONG;
 				entry->value.vint = 2;
@@ -877,7 +884,7 @@ namespace GM
 				return LEX_REPEAT;
 				break;
 			}
-
+			break;
 		}
 		case 's':
 		{
@@ -894,21 +901,53 @@ namespace GM
 				return LEX_STRING;
 				break;
 			}
-			FST::FST graph_date(string, 7,
+			FST::FST graph_strlen(string, 7,
 				FST::NODE(1, FST::RELATION('s', 1)),
 				FST::NODE(1, FST::RELATION('t', 2)),
 				FST::NODE(1, FST::RELATION('r', 3)),
 				FST::NODE(1, FST::RELATION('l', 4)),
-				FST::NODE(1, FST::RELATION('e', 4)),
-				FST::NODE(1, FST::RELATION('n', 4)),
+				FST::NODE(1, FST::RELATION('e', 5)),
+				FST::NODE(1, FST::RELATION('n', 6)),
 				FST::NODE());
-			if (result = execute(graph_date)) {
+			if (result = execute(graph_strlen)) {
 				entry->idtype = IT::IDTYPE::E;
-				entry->iddatatype = IT::IDDATATYPE::STR;
+				entry->iddatatype = IT::IDDATATYPE::LONG;
 				entry->value.vint = 1;
 				return LEX_ID;
 				break;
 			}
+			FST::FST graph_strcat(string, 7,
+				FST::NODE(1, FST::RELATION('s', 1)),
+				FST::NODE(1, FST::RELATION('t', 2)),
+				FST::NODE(1, FST::RELATION('r', 3)),
+				FST::NODE(1, FST::RELATION('c', 4)),
+				FST::NODE(1, FST::RELATION('a', 5)),
+				FST::NODE(1, FST::RELATION('t', 6)),
+				FST::NODE());
+			if (result = execute(graph_strcat)) {
+				entry->idtype = IT::IDTYPE::E;
+				entry->iddatatype = IT::IDDATATYPE::STR;
+				entry->value.vint = 2;
+				return LEX_ID;
+				break;
+			}
+			FST::FST graph_strcopy(string, 8,
+				FST::NODE(1, FST::RELATION('s', 1)),
+				FST::NODE(1, FST::RELATION('t', 2)),
+				FST::NODE(1, FST::RELATION('r', 3)),
+				FST::NODE(1, FST::RELATION('c', 4)),
+				FST::NODE(1, FST::RELATION('o', 5)),
+				FST::NODE(1, FST::RELATION('p', 6)),
+				FST::NODE(1, FST::RELATION('y', 7)),
+				FST::NODE());
+			if (result = execute(graph_strcopy)) {
+				entry->idtype = IT::IDTYPE::E;
+				entry->iddatatype = IT::IDDATATYPE::STR;
+				entry->value.vint = 2;
+				return LEX_ID;
+				break;
+			}
+			break;
 		}
 		case 't':
 		{
@@ -925,6 +964,7 @@ namespace GM
 				entry->value.vbool = true;
 				return LEX_LITERAL;
 			}
+			break;
 		}
 		case 'u':
 		{
@@ -939,7 +979,7 @@ namespace GM
 				return LEX_UNTIL;
 				break;
 			}
-
+			break;
 		}
 		case 'w':
 		{
@@ -992,6 +1032,7 @@ namespace GM
 				return LEX_WRITEL;
 				break;
 			}
+			break;
 		}
 		case '{':
 		{
@@ -1002,7 +1043,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_LEFTBRACE;
 			}
-
+			break;
 		}
 		case '}':
 		{
@@ -1013,7 +1054,7 @@ namespace GM
 			if (result = execute(graph)) {
 				return LEX_RIGHTBRACE;
 			}
-
+			break;
 		}
 		case '~':
 		{
@@ -1025,6 +1066,7 @@ namespace GM
 				return LEX_INVERSION;
 				break;
 			}
+			break;
 		}
 		case '$':
 		{
@@ -1064,12 +1106,13 @@ namespace GM
 				return LEX_ID;
 				break;
 			}
+			break;
 		}
 		case '\'':
 		{
 			FST::FST graph_literal(string, 3,
-				FST::NODE(1,FST::RELATION('\'', 1)),
-				FST::NODE(151,
+				FST::NODE(1, FST::RELATION('\'', 1)),
+				FST::NODE(156,
 					FST::RELATION('a', 1),
 					FST::RELATION('b', 1),
 					FST::RELATION('c', 1),
@@ -1144,6 +1187,7 @@ namespace GM
 					FST::RELATION('Ж', 1),
 					FST::RELATION('З', 1),
 					FST::RELATION('И', 1),
+					FST::RELATION('Й', 1),
 					FST::RELATION('К', 1),
 					FST::RELATION('Л', 1),
 					FST::RELATION('М', 1),
@@ -1160,6 +1204,7 @@ namespace GM
 					FST::RELATION('Ч', 1),
 					FST::RELATION('Ш', 1),
 					FST::RELATION('Щ', 1),
+					FST::RELATION('Ы', 1),
 					FST::RELATION('Ь', 1),
 					FST::RELATION('Ъ', 1),
 					FST::RELATION('Э', 1),
@@ -1175,6 +1220,7 @@ namespace GM
 					FST::RELATION('ж', 1),
 					FST::RELATION('з', 1),
 					FST::RELATION('и', 1),
+					FST::RELATION('й', 1),
 					FST::RELATION('к', 1),
 					FST::RELATION('л', 1),
 					FST::RELATION('м', 1),
@@ -1191,6 +1237,7 @@ namespace GM
 					FST::RELATION('ч', 1),
 					FST::RELATION('ш', 1),
 					FST::RELATION('щ', 1),
+					FST::RELATION('ы', 1),
 					FST::RELATION('ь', 1),
 					FST::RELATION('ъ', 1),
 					FST::RELATION('э', 1),
@@ -1200,6 +1247,7 @@ namespace GM
 					FST::RELATION('=', 1),
 					FST::RELATION('+', 1),
 					FST::RELATION('*', 1),
+					FST::RELATION('/', 1),
 					FST::RELATION(';', 1),
 					FST::RELATION(':', 1),
 					FST::RELATION('(', 1),
@@ -1218,9 +1266,9 @@ namespace GM
 					FST::RELATION('@', 1),
 					FST::RELATION('[', 1),
 					FST::RELATION(']', 1),
-					FST::RELATION('\\',1),
-					FST::RELATION('~',1),
-					FST::RELATION('\'',2)),
+					FST::RELATION('\\', 1),
+					FST::RELATION('~', 1),
+					FST::RELATION('\'', 2)),
 				FST::NODE());
 			if (result = execute(graph_literal)) {
 				entry->iddatatype = IT::IDDATATYPE::STR;
@@ -1228,8 +1276,8 @@ namespace GM
 				break;
 			}
 		}
-		default:
-		{
+		}
+		
 			FST::FST graph_identificator(string, 1,
 				FST::NODE(26,
 					FST::RELATION('a', 0),
@@ -1262,10 +1310,8 @@ namespace GM
 			);
 			if (result = execute(graph_identificator)) {
 				return LEX_ID;
-				break;
 			}
-		}
-		}
+		
 		return 0;
 	}
 

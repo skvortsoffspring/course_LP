@@ -4,6 +4,8 @@
 #include <iomanip>
 #include <stack>
 
+
+
 MFST::MFSTState::MFSTState()
 {
 	lenta_position = 0;
@@ -76,16 +78,22 @@ MFST::MFST::RC_STEP MFST::MFST::step()
 				GRB::Rule::Chain chain;
 				if ((nrulechain = rule.getNextChain(lenta[lenta_position], chain, nrulechain + 1)) >= 0)
 				{
+#ifdef DEBUG
 					MFST_TRACE1
+#endif
 					savestate();
 					st.pop();
 					push_chain(chain);
 					rc = NS_OK;
+#ifdef DEBUG
 					MFST_TRACE2
+#endif
 				}
 				else
 				{
+#ifdef DEBUG
 					MFST_TRACE4("TNS_NS_NORULECHAIN/NS_NORULE")
+#endif
 					savediagnosis(NS_NORULECHAIN); rc = resetstate() ? NS_NORULECHAIN : NS_NORULE;
 				}
 			}
@@ -98,18 +106,24 @@ MFST::MFST::RC_STEP MFST::MFST::step()
 			st.pop();
 			nrulechain = -1;
 			rc = TS_OK;
+#ifdef DEBUG
 			MFST_TRACE3
+#endif
 		}
 		else
 		{
+#ifdef DEBUG
 			MFST_TRACE4("TS_NOK/TNS_NS_NORULECHAIN/NS_NORULE")
+#endif
 			rc = resetstate() ? TS_NOK : NS_NORULECHAIN;
 		}
 	}
 	else
 	{
 		rc = LENTA_END;
+#ifdef DEBUG
 		MFST_TRACE4("LENTA_END")
+#endif
 	}
 
 	return rc;
@@ -125,7 +139,9 @@ bool MFST::MFST::push_chain(GRB::Rule::Chain chain)
 bool MFST::MFST::savestate()
 {
 	storestate.push(MFSTState(lenta_position, st, nrule, nrulechain));
+#ifdef DEBUG
 	MFST_TRACE6("SAVESTATE:", storestate.size())
+#endif
 	return true;
 }
 
@@ -142,8 +158,10 @@ bool MFST::MFST::resetstate()
 		nrule = state.nrule;
 		nrulechain = state.nrulechain;
 		storestate.pop();
+#ifdef DEBUG
 		MFST_TRACE5("RESTATE")
 		MFST_TRACE2
+#endif // DEBUG
 	}
 
 	return rc;
@@ -180,27 +198,32 @@ bool MFST::MFST::start()
 	{
 		case LENTA_END:
 		{
+#ifdef DEBUG
 			MFST_TRACE4("------>LENTA_END")
 				std::cout << "------------------------------------------------------------------------------------------   ------" << std::endl;
 			sprintf_s(buf, MFST_DIAGN_MAXSIZE, "%d: всего строк %d, синтаксический анализ выполнен без ошибок", 0, lenta_size);
 			std::cout << std::setw(4) << std::left << 0 << "всего строк " << lenta_size << ", синтаксический анализ выполнен без ошибок" << std::endl;
+#endif // DEBUG
 			rc = true;
 			break;
 		}
 
 		case NS_NORULE:
 		{
+//#ifdef DEBUG
 			MFST_TRACE4("------>NS_NORULE")
 				std::cout << "------------------------------------------------------------------------------------------   ------" << std::endl;
 			std::cout << getDiagnosis(0, buf) << std::endl;
 			std::cout << getDiagnosis(1, buf) << std::endl;
 			std::cout << getDiagnosis(2, buf) << std::endl;
+//#endif // DEBUG
 			break;
 		}
-
+//#ifdef DEBUG
 		case NS_NORULECHAIN:	MFST_TRACE4("------>NS_NORULECHAIN") break;
 		case NS_ERROR:			MFST_TRACE4("------>NS_ERROR") break;
 		case SURPRISE:			MFST_TRACE4("------>NS_SURPRISE") break;
+//#endif // DEBUG
 	};
 
 	return rc;
@@ -249,12 +272,14 @@ void MFST::MFST::printRules()
 {
 	MFSTState state;
 	GRB::Rule rule;
+
 	for (unsigned short i = 0; i < storestate.size(); i++)
 	{
 		state = storestate[i];
 		rule = grebach.getRule(state.nrule);
 		MFST_TRACE7
 	}
+
 }
 
 bool MFST::MFST::savededucation()

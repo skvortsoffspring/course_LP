@@ -1,4 +1,3 @@
-﻿  GTA.cpp
-C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\GTA.cpp(271,12): warning C4101: buffer: неиспользованная локальная переменная
-C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\GTA.cpp(349,28): warning C4018: <: несоответствие типов со знаком и без знака
+﻿  course_project.cpp
+C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\course_LP\course_project.cpp(8,7): warning C4101: a: неиспользованная локальная переменная
   course_LP.vcxproj -> C:\Users\Skvortsoff\OneDrive\Документы\GitHub\course_LP\Debug\course_LP.exe

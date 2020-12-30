@@ -2,6 +2,7 @@ long function sort(long x[], long size){
 long i = 0;
 long j = 0;
 long temp;
+
 repeat{
 	j = 0;
 		repeat{
@@ -15,38 +16,137 @@ repeat{
 		}until(j<8);
 	i++;
 }until(i<8);
-return 0;
+return x;
 }
-long function maxx(long x[], long size){
-	long j;
-	long arrmax = 0;
-		repeat{
-			if(x[j]>arrmax)
-			{
-				arrmax = x[j];
-			}
-			j++;
-		}until(j<8);
-	return arrmax;
+
+
+string function replacestr(string x,string m)
+{
+	byte length;
+	byte i;
+	repeat{
+		x[i] = m[i];
+		i++;
+	}until(i!=2);
+	return x;
+}
+
+long function summarr(long x[])
+{
+	byte i;
+	long summ;
+	long temp;
+
+	repeat{
+		summ = summ + x[i];
+		i++;
+	}until(i<9);
+
+	return summ;
+}
+long function test(long x)
+{
+	return summ;
 }
 main
 {
-	string hello = 'hello';
-	long i = 0;
+	long i = 0;	
 	long j = 0;
-	long temp;
-	long $size = 1033;
-	long h[$size] = {10, 81, 1101
-	, 68, 98,11,12,12,45,45};
-	byte j[$size] = {40, 1, 18, 6, 9,11,42,72,4,15};
-	i = sort(h,$size);
-	temp = maxx(h, $size);
-	write('max element = ', temp);
+	bool flag = true;
+	long $size = 10;
+	string wlock = 'warlock';
+	string mtama = 'murlakatama';
+	string hello = 'hello';
+	string space = ' ';
+	string world = 'world';
+	byte arry[$size];
+	long arrx[10] = {10, 81, 111, 68, 98,11,12,12,45,45};
+
+	write('array long: ');
+		repeat{
+			write('x[',i,']:',arrx[i],',');
+			i++;
+		}until(i<9);
+
 	i = 0;
-	repeat{
-	writeline(h[i]);
-	i++;
-	}until(i<9);
+	sort(arrx,$size);
 	write();
-return 0;
+	write('array sort: ');
+
+		repeat{
+			write('x[',i,']:',arrx[i],',');
+			i++;
+		}until(i<9);
+
+	i = 0;
+	write();
+	write();
+	write();
+	write('summ alements array = ', summarr(arrx));
+	write();
+	write();
+	writeline('cycle in cicle and if else');
+
+	repeat{
+		j = i;
+		repeat{
+			if(flag)
+			{
+				write('#');
+				flag = false;
+			}
+			else
+			{
+				write('*');
+				flag = true;
+			}
+			j++;
+		}until(j<9);
+		write('@');
+		flag = true;
+		i++;
+			write();
+	}until(i<9);
+
+	i = 0;
+	write();
+	write();
+	writeline('fill array byte for random');
+	overflow;
+
+	repeat{
+		arry[i] = random(0,255);
+		i++;
+	}until(i < 9);
+	i = 0;
+
+	repeat{
+		write('y[',i,']:',arry[i],',');
+		i++;
+	}until(i < 9);
+
+	overflow;
+	write();
+	write();
+	writeline('#function call to replace characters#');
+
+	replacestr(wlock,mtama);
+
+	writeline(wlock);
+	write();
+	write();
+	i = 10*(2+2)*15/3+strlen(hello);
+	write('10*(2+2)*15/3+strlen(hello) = ',i);
+	write();	
+	write();	
+	writeline('#standart string function#');
+	write('standart strcat: ');
+	strcat(hello,space);
+	strcat(hello,world);
+	writeline(hello);
+	write('standart strlen : ', strlen(hello));
+	write();
+	write('standart strcopy: ');
+	writeline(strcopy('string','work'));
+	return 0;
 }

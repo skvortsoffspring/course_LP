@@ -112,10 +112,12 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
-      <WarningLevel>Level3</WarningLevel>
+      <WarningLevel>EnableAllWarnings</WarningLevel>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
+      <AssemblerOutput>All</AssemblerOutput>
+      <BrowseInformation>true</BrowseInformation>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -152,6 +154,7 @@
     <ClCompile Include="MFST.cpp" />
     <ClCompile Include="Parm.cpp" />
     <ClCompile Include="PN.cpp" />
+    <ClCompile Include="SA.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DP.h" />
@@ -166,6 +169,7 @@
     <ClInclude Include="MFST.h" />
     <ClInclude Include="Parm.h" />
     <ClInclude Include="PN.h" />
+    <ClInclude Include="SA.h" />
     <ClInclude Include="stdafx.h" />
   </ItemGroup>
   <ItemGroup>

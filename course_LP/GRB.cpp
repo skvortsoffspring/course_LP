@@ -81,7 +81,7 @@ namespace GRB
 		Rule(NS('S'), GRB_ERROR_SERIES + 0,
 			2,	//Неверная структура программы
 			Rule::Chain(13, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('X'), TS(';'), TS('}'), NS('S')),
-			Rule::Chain(7, TS('m'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'))
+			Rule::Chain(7, TS('m'), TS('{'), NS('N'), TS('r'), NS('X'), TS(';'), TS('}'))
 		),
 		Rule(NS('N'), GRB_ERROR_SERIES + 1,
 			31,	//ошибочный оператор																
@@ -92,7 +92,7 @@ namespace GRB
 			Rule::Chain(5,  TS('i'), TS('='), NS('E'), TS(';'), NS('N')),																	// identificator = ->E ; ->N
 			Rule::Chain(6,  TS('t'), TS('i'), TS('='), NS('E'), TS(';'), NS('N')),															// type identificator = ->E; ->N
 			Rule::Chain(6,  TS('w'), TS('('), NS('E'), TS(')'), TS(';'), NS('N')),
-			Rule::Chain(6,  TS('i'), TS('('), NS('X'), TS(')'), TS(';'), NS('N')),
+			Rule::Chain(6,  TS('i'), TS('('), NS('E'), TS(')'), TS(';'), NS('N')),
 			Rule::Chain(7,  TS('t'), TS('i'), TS('['), NS('E'), TS(']'), TS(';'), NS('N')),													// type identificator [->E] ; ->N
 			Rule::Chain(8,  TS('i'), TS('['), NS('E'), TS(']'), TS('='), NS('E'), TS(';'), NS('N')),										// identificator [->E] = ->E ;->N
 			Rule::Chain(8,  TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS(';'), NS('N')),										// type func identificator (->F) ; ->N
@@ -102,8 +102,8 @@ namespace GRB
 			Rule::Chain(8,  TS('z'), TS('('), NS('X'), TS(')'), TS('{'), NS('N'), TS('}'), NS('N')),										// if(->E c ->E) {->N } ->N
 			Rule::Chain(11, TS('t'), TS('i'), TS('['), NS('E'), TS(']'), TS('='), TS('{'), NS('A'), TS('}'), TS(';'), NS('N')),				// type identificator [->E] = {->A} ; ->N
 			Rule::Chain(12, TS('p'), TS('{'), NS('N'), TS('}'), TS('u'), TS('('), NS('X'), TS('c'), NS('X'), TS(')'), TS(';'), NS('N')),	// repeat {-N} until (->E c ->E);
+			Rule::Chain(2,  TS('o'), TS(';')),																								// overflow control o; ->N		
 			Rule::Chain(3,	TS('i'), TS('n'), TS(';')),																						// iterator
-			Rule::Chain(3,	TS('r'), NS('E'), TS(';')),																						// return ->E ;																																				// return ->E ;																
 			Rule::Chain(3,	TS('t'), TS('i'), TS(';')),																						// type identificator
 			Rule::Chain(4,	TS('w'), TS('('), TS(')'), TS(';')),
 			Rule::Chain(4,	TS('i'), TS('='), NS('E'), TS(';')),																			// identificator = ->E;
@@ -119,26 +119,21 @@ namespace GRB
 
 		),
 		Rule(NS('E'), GRB_ERROR_SERIES + 2,
-			19,	//выражение
+			14,	//выражение
 			Rule::Chain(1, TS('i')),
 			Rule::Chain(1, TS('l')),
 			Rule::Chain(2, TS('i'), NS('M')),
 			Rule::Chain(2, TS('l'), NS('M')),
 			Rule::Chain(3, TS('i'), TS('n'), TS(';')),
-			Rule::Chain(3, TS('('), NS('E'), TS(')')),
-			Rule::Chain(3, TS('i'), TS('b'), NS('X')),																// XbX;	
-			Rule::Chain(3, TS('l'), TS('b'), NS('X')),																// XbX;	
 			Rule::Chain(3, TS('l'), TS(','), NS('E')),																// XbX;	
 			Rule::Chain(3, TS('i'), TS(','), NS('E')),
 			Rule::Chain(4, TS('i'), TS('('), NS('W'), TS(')')),
-			Rule::Chain(4, TS('i'), TS('b'), NS('X'), NS('N')),														// XbX;N
-			Rule::Chain(4, TS('l'), TS('b'), NS('X'), NS('N')),
 			Rule::Chain(4, TS('i'), TS('['), NS('E'), TS(']')),
 			Rule::Chain(4, TS('('), NS('E'), TS(')'), NS('M')),
+			Rule::Chain(5, TS('i'), TS('('), NS('E'), TS(')'), NS('M')),
 			Rule::Chain(5, TS('i'), TS('('), NS('W'), TS(')'), NS('M')),
 			Rule::Chain(6, TS('i'), TS('['), NS('E'), TS(']'), TS(','), NS('E')),
-			Rule::Chain(5, TS('i'), TS('['), NS('E'), TS(']'), NS('M')),
-			Rule::Chain(6, TS('i'), TS('['), NS('E'), TS(']'), TS(','), NS('M'))
+			Rule::Chain(5, TS('i'), TS('['), NS('E'), TS(']'), NS('M'))
 		),
 		Rule(NS('M'), GRB_ERROR_SERIES + 3,
 			2,	//Ошибка в выражении с арефмитическими операторами
@@ -167,7 +162,7 @@ namespace GRB
 			Rule::Chain(3, TS('l'), TS(','), NS('A'))		
 		),
 		Rule(NS('X'), GRB_ERROR_SERIES + 7,
-			4,	// литералы массива
+			4,	
 			Rule::Chain(1, TS('l')),
 			Rule::Chain(1, TS('i')),
 			Rule::Chain(4, TS('i'), TS('['), NS('E'), TS(']')),

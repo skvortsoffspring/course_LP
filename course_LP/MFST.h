@@ -5,7 +5,8 @@
 #include "Error.h"
 #define MFST_DIAGN_MAXSIZE 2*ERROR_MAXSIZE_MESSAGE
 #define MFST_DIAGN_NUMBER 3
-
+//#define DEBUG
+#define RULESPRINT
 template <typename T>
 class Stack 
 {

@@ -52,24 +52,24 @@ namespace IT
 	int IsId(IdTable& idtable,LT::LexTable& lextable, char* id,char* prefix, int line,bool visibility,IDDATATYPE dtype, IDTYPE ttype) {
 		for (int i = 0; i < idtable.current_size; i++)
 		{
-			if (!strcmp(idtable.table[i].id, id) && idtable.table[i].idtype == F) {
+			if (!strncmp(idtable.table[i].id, id, ID_MAXSIZE) && idtable.table[i].idtype == F) {
 				visibility = true;
 				return lextable.table[idtable.table[i].idxfirstLE].idxTI;
 			}
 			
-			if (!strcmp(idtable.table[i].id, id) && !strcmp(idtable.table[i].prefix, prefix))
+			if (!strncmp(idtable.table[i].id, id, ID_MAXSIZE) && !strncmp(idtable.table[i].prefix, prefix, ID_MAXSIZE))
 			{
 				if (idtable.table[i].idtype == F && idtable.table[i].idtype == ttype)
 					throw ERROR_THROW_LINE(125, line);
-				//if (idtable.table[i].idtype == V &&  idtable.table[i].idtype == ttype)
-				//	throw ERROR_THROW_LINE(126, line);
-				//if (idtable.table[i].idtype == P && idtable.table[idtable.current_size].idtype == V)
-				//	throw ERROR_THROW_LINE(126, line);
+				if (idtable.table[i].idtype == V &&  idtable.table[i].idtype == ttype)
+					throw ERROR_THROW_LINE(126, line);
+				if (idtable.table[i].idtype == P && idtable.table[idtable.current_size].idtype == V)
+					throw ERROR_THROW_LINE(126, line);
 				idtable.table[idtable.current_size].idtype = idtable.table[i].idtype;
 				return lextable.table[idtable.table[i].idxfirstLE].idxTI;
 
 			}
-			if (!strncmp(idtable.table[i].id, id, 10) && dtype)
+			if (!strncmp(idtable.table[i].id, id, ID_MAXSIZE) && dtype)
 			{
 				if (idtable.table[i].idtype == IT::F)
 					return lextable.table[idtable.table[i].idxfirstLE].idxTI;
@@ -283,7 +283,7 @@ namespace IT
 
 	void PrintIdTable(const wchar_t* out, IdTable& idtable)
 	{
-		short lengthRow = 20;
+		short lengthRow = 12;
 		std::fstream fout(out, std::ios::out);
 
 		char buffer[48];
@@ -307,6 +307,71 @@ namespace IT
 		for (int i = 0; i < idtable.current_size; i++)
 		{
 			if (idtable.table[i].idtype == IT::IDTYPE::C) {
+				fout.width(lengthRow);
+				fout << idtable.table[i].prefix;
+				fout.width(lengthRow);
+				fout << idtable.table[i].id;
+
+				if (idtable.table[i].iddatatype == CHAR) {
+					fout.width(lengthRow); fout << "byte";
+					if (!idtable.table[i].value.vchar) {
+						fout.width(lengthRow); fout << "0x00";
+					}
+					else
+					{
+						fout.width(lengthRow); fout << idtable.table[i].value.vchar;
+					}
+					fout.width(lengthRow); fout << "-";
+				}
+				else if (idtable.table[i].iddatatype == BOOL) {
+					fout.width(lengthRow); fout << "bool";
+					fout.width(lengthRow); fout << idtable.table[i].value.vbool;
+					fout.width(lengthRow); fout << "-";
+				}
+				else if (idtable.table[i].iddatatype == LONG) {
+					fout.width(lengthRow); fout << "long";
+					fout.width(lengthRow); fout << idtable.table[i].value.vint;
+					fout.width(lengthRow); fout << "-";
+				}
+				else if (idtable.table[i].iddatatype == FLOAT) {
+					fout.width(lengthRow); fout << "float";
+					fout.width(lengthRow); fout << idtable.table[i].value.vfloat;
+					fout.width(lengthRow); fout << "-";
+				}
+				else if (idtable.table[i].iddatatype == STR) {
+					fout.width(lengthRow); fout << "string";
+					fout.width(lengthRow); fout << "-";
+					fout.width(lengthRow); fout << (int)idtable.table[i].value.vstr->len;
+				}
+				else
+					fout.width(lengthRow * 3 + 1); fout << " ";
+
+				if (idtable.table[i].iddatatype)
+				{
+					fout << idtable.table[i].idxfirstLE;
+				}
+				else
+				{
+					fout << "TI[" << idtable.table[i].idxfirstLE << "]";
+				}
+				fout << ENDL;
+			}
+
+		}
+		fout << ENDL;
+#pragma endregion
+#pragma ptrprint
+		fout.setf(std::ios::left);
+		fout.width(lengthRow); fout << "visible";
+		fout.width(lengthRow); fout << "ptr";
+		fout.width(lengthRow); fout << "type";
+		fout.width(lengthRow); fout << "value int";
+		fout.width(lengthRow); fout << "value str";
+		fout.width(lengthRow); fout << "idxfirstLE" << ENDL;
+
+		for (int i = 0; i < idtable.current_size; i++)
+		{
+			if (idtable.table[i].idtype == IT::IDTYPE::PA) {
 				fout.width(lengthRow);
 				fout << idtable.table[i].prefix;
 				fout.width(lengthRow);

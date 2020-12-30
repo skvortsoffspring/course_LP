@@ -54,6 +54,9 @@
     <ClCompile Include="GTA.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="SA.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="DP.h">
@@ -93,6 +96,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="GTA.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="SA.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

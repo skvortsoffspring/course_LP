@@ -1,45 +1,103 @@
-﻿  Assembling ..\course_LP\source.asm...
-..\course_LP\source.asm(3): error A2008: syntax error : .
-..\course_LP\source.asm(4): error A2008: syntax error : .
-..\course_LP\source.asm(5): error A2008: syntax error : .
-..\course_LP\source.asm(72): error A2008: syntax error : invoke
-..\course_LP\source.asm(76): error A2008: syntax error : invoke
-..\course_LP\source.asm(78): error A2070: invalid instruction operands
-..\course_LP\source.asm(115): error A2070: invalid instruction operands
-..\course_LP\source.asm(117): error A2070: invalid instruction operands
-..\course_LP\source.asm(123): error A2070: invalid instruction operands
-..\course_LP\source.asm(126): error A2070: invalid instruction operands
-..\course_LP\source.asm(129): error A2070: invalid instruction operands
-..\course_LP\source.asm(132): error A2070: invalid instruction operands
-..\course_LP\source.asm(169): error A2070: invalid instruction operands
-..\course_LP\source.asm(171): error A2070: invalid instruction operands
-..\course_LP\source.asm(173): error A2070: invalid instruction operands
-..\course_LP\source.asm(177): error A2070: invalid instruction operands
-..\course_LP\source.asm(187): error A2070: invalid instruction operands
-..\course_LP\source.asm(190): error A2070: invalid instruction operands
-..\course_LP\source.asm(193): error A2070: invalid instruction operands
-..\course_LP\source.asm(196): error A2070: invalid instruction operands
-..\course_LP\source.asm(202): error A2008: syntax error : invoke
-..\course_LP\source.asm(204): error A2008: syntax error : invoke
-..\course_LP\source.asm(216): error A2008: syntax error : invoke
-..\course_LP\source.asm(218): error A2008: syntax error : invoke
-..\course_LP\source.asm(257): error A2070: invalid instruction operands
-..\course_LP\source.asm(259): error A2070: invalid instruction operands
-..\course_LP\source.asm(260): error A2070: invalid instruction operands
-..\course_LP\source.asm(261): error A2070: invalid instruction operands
-..\course_LP\source.asm(267): error A2070: invalid instruction operands
-..\course_LP\source.asm(270): error A2008: syntax error : ,
-..\course_LP\source.asm(271): error A2070: invalid instruction operands
-..\course_LP\source.asm(274): error A2070: invalid instruction operands
-..\course_LP\source.asm(282): error A2008: syntax error : ,
-..\course_LP\source.asm(295): error A2070: invalid instruction operands
-..\course_LP\source.asm(298): error A2070: invalid instruction operands
-..\course_LP\source.asm(304): error A2070: invalid instruction operands
-..\course_LP\source.asm(307): error A2070: invalid instruction operands
-..\course_LP\source.asm(317): error A2008: syntax error : invoke
-..\course_LP\source.asm(319): error A2008: syntax error : invoke
-..\course_LP\source.asm(325): error A2008: syntax error : eax
-..\course_LP\source.asm(337): error A2070: invalid instruction operands
-..\course_LP\source.asm(339): error A2070: invalid instruction operands
-..\course_LP\source.asm(342): fatal error A1010: unmatched block nesting : write
-C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets(70,5): error MSB3721: выход из команды "ml64.exe /c /nologo /Zi /Fo"x64\Debug\source.obj" /W3 /errorReport:prompt  /Ta..\course_LP\source.asm" с кодом "1".
+﻿  Assembling source.asm...
+source.asm(3): error A2008: syntax error : .
+source.asm(4): error A2008: syntax error : .
+source.asm(5): error A2008: syntax error : .
+source.asm(133): error A2070: invalid instruction operands
+source.asm(136): error A2070: invalid instruction operands
+source.asm(141): error A2070: invalid instruction operands
+source.asm(145): error A2070: invalid instruction operands
+source.asm(150): error A2070: invalid instruction operands
+source.asm(155): error A2070: invalid instruction operands
+source.asm(160): error A2070: invalid instruction operands
+source.asm(165): error A2070: invalid instruction operands
+source.asm(174): error A2070: invalid instruction operands
+source.asm(177): error A2070: invalid instruction operands
+source.asm(183): error A2070: invalid instruction operands
+source.asm(186): error A2070: invalid instruction operands
+source.asm(191): error A2070: invalid instruction operands
+source.asm(194): error A2070: invalid instruction operands
+source.asm(214): error A2008: syntax error : invoke
+source.asm(216): error A2008: syntax error : invoke
+source.asm(218): error A2008: syntax error : invoke
+source.asm(232): error A2070: invalid instruction operands
+source.asm(236): error A2070: invalid instruction operands
+source.asm(241): error A2070: invalid instruction operands
+source.asm(244): error A2070: invalid instruction operands
+source.asm(248): error A2070: invalid instruction operands
+source.asm(251): error A2070: invalid instruction operands
+source.asm(265): error A2008: syntax error : invoke
+source.asm(267): error A2008: syntax error : invoke
+source.asm(269): error A2008: syntax error : invoke
+source.asm(284): error A2070: invalid instruction operands
+source.asm(286): error A2070: invalid instruction operands
+source.asm(290): error A2070: invalid instruction operands
+source.asm(294): error A2070: invalid instruction operands
+source.asm(314): error A2008: syntax error : invoke
+source.asm(316): error A2008: syntax error : invoke
+source.asm(318): error A2008: syntax error : invoke
+source.asm(343): error A2070: invalid instruction operands
+source.asm(346): error A2070: invalid instruction operands
+source.asm(347): error A2070: invalid instruction operands
+source.asm(352): error A2070: invalid instruction operands
+source.asm(355): error A2070: invalid instruction operands
+source.asm(356): error A2070: invalid instruction operands
+source.asm(361): error A2070: invalid instruction operands
+source.asm(364): error A2070: invalid instruction operands
+source.asm(365): error A2070: invalid instruction operands
+source.asm(370): error A2070: invalid instruction operands
+source.asm(373): error A2070: invalid instruction operands
+source.asm(374): error A2070: invalid instruction operands
+source.asm(379): error A2070: invalid instruction operands
+source.asm(382): error A2070: invalid instruction operands
+source.asm(383): error A2070: invalid instruction operands
+source.asm(447): error A2008: syntax error : invoke
+source.asm(451): error A2008: syntax error : invoke
+source.asm(453): error A2008: syntax error : invoke
+source.asm(454): error A2008: syntax error : invoke
+source.asm(456): error A2008: syntax error : invoke
+source.asm(460): error A2070: invalid instruction operands
+source.asm(463): error A2070: invalid instruction operands
+source.asm(468): error A2008: syntax error : int_to_char
+source.asm(469): error A2008: syntax error : invoke
+source.asm(472): error A2008: syntax error : invoke
+source.asm(485): error A2070: invalid instruction operands
+source.asm(487): error A2070: invalid instruction operands
+source.asm(489): error A2008: syntax error : invoke
+source.asm(491): error A2008: syntax error : invoke
+source.asm(495): error A2008: syntax error : invoke
+source.asm(497): error A2008: syntax error : invoke
+source.asm(498): error A2008: syntax error : invoke
+source.asm(500): error A2008: syntax error : invoke
+source.asm(504): error A2070: invalid instruction operands
+source.asm(507): error A2070: invalid instruction operands
+source.asm(512): error A2008: syntax error : int_to_char
+source.asm(513): error A2008: syntax error : invoke
+source.asm(516): error A2008: syntax error : invoke
+source.asm(527): error A2008: syntax error : invoke
+source.asm(528): error A2008: syntax error : invoke
+source.asm(530): error A2008: syntax error : invoke
+source.asm(546): error A2008: syntax error : invoke
+source.asm(556): error A2008: syntax error : invoke
+source.asm(570): error A2008: syntax error : invoke
+source.asm(577): error A2008: syntax error : invoke
+source.asm(586): error A2008: syntax error : invoke
+source.asm(587): error A2008: syntax error : invoke
+source.asm(589): error A2008: syntax error : invoke
+source.asm(594): error A2070: invalid instruction operands
+source.asm(596): error A2070: invalid instruction operands
+source.asm(599): error A2070: invalid instruction operands
+source.asm(602): error A2070: invalid instruction operands
+source.asm(605): error A2070: invalid instruction operands
+source.asm(608): error A2070: invalid instruction operands
+source.asm(625): error A2008: syntax error : invoke
+source.asm(627): error A2008: syntax error : invoke
+source.asm(628): error A2008: syntax error : invoke
+source.asm(630): error A2008: syntax error : invoke
+source.asm(634): error A2070: invalid instruction operands
+source.asm(637): error A2070: invalid instruction operands
+source.asm(645): error A2008: syntax error : int_to_char
+source.asm(646): error A2008: syntax error : invoke
+source.asm(649): error A2008: syntax error : invoke
+source.asm(656): error A2008: syntax error : invoke
+source.asm(657): fatal error A1012: error count exceeds 100; stopping assembly
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets(70,5): error MSB3721: выход из команды "ml64.exe /c /nologo /Zi /Fo"x64\Debug\source.obj" /W3 /errorReport:prompt  /Tasource.asm" с кодом "1".

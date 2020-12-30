@@ -1,0 +1,5 @@
+﻿  Assembling string.asm...
+string.asm(1): error A2008: syntax error : .
+string.asm(2): error A2008: syntax error : .
+string.asm(3): error A2008: syntax error : .
+C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\MSBuild\Microsoft\VC\v160\BuildCustomizations\masm.targets(70,5): error MSB3721: выход из команды "ml64.exe /c /nologo /Zi /Fo"x64\Debug\string.obj" /W3 /errorReport:prompt  /Tastring.asm" с кодом "1".

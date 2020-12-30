@@ -17,7 +17,7 @@ namespace In
 			throw ERROR_THROW(110)
 
 		IN in;
-
+		bool comment = false;
 		in.text = new unsigned char[IN_MAX_LEN_TEXT];
 
 		if (!in.text)
@@ -27,12 +27,24 @@ namespace In
 		{
 			if (fin.eof())
 				break;
+
 			if (symbol == ENDL)
 			{
 				in.lines++;
 				in.text[positionArr] = ENDL;
 				positionErr = 0;
+				comment = false;
 			}
+			if (comment)
+			{
+				in.ignor++;
+				in.size++;
+				continue;
+			}
+
+			if (symbol == ';')
+				comment = true;
+
 			switch (in.code[symbol])
 			{
 				case IN::F:
@@ -52,7 +64,7 @@ namespace In
 						else literal = true;								//
 						allowSpaces = false;
 					}
-					else if (allowSpaces)									//
+					else if (allowSpaces && !literal)						//
 						in.text[positionArr++] = SPACE;						//
 
 					in.text[positionArr++] = symbol;
@@ -73,11 +85,11 @@ namespace In
 				{
 
 					if (!allowSpaces && !specialSymbols)					//
-						allowSpaces = true;								//
+						allowSpaces = true;									//
 					else													//
 						in.ignor++;											//
 
-					if (literal)												//
+					if (literal)											//
 						in.text[positionArr++] = symbol;					//
 
 					in.size++;
@@ -95,7 +107,7 @@ namespace In
 				{
 					if (literal)											//
 						throw ERROR_THROW_IN(114, in.lines, positionErr);	//
-					//if(unsigned char(in.code[symbol] - 1 ) != '|')
+						//if(unsigned char(in.code[symbol] - 1 ) != '|')
 						in.text[positionArr++] = unsigned char(in.code[symbol]);
 					allowSpaces = false;									//
 					specialSymbols = true;									//
