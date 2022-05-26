@@ -1,73 +1,82 @@
 **# Course project **
-## Invented language "SIA" compilier to assembler
+## Invented language "SIA" with compilier to assembler
 ![image](https://user-images.githubusercontent.com/39678226/170512159-f2ac3069-2a3a-465e-b4a7-896bf108d402.png)
 
 Developer [Skvortsov Igor](https://vk.com/garikmogilev)
 
-- Register-based execution
-- four types of data : byte(1), long(4), bool(1), string (255)
+- register-based execution
+- four datatypes : byte(1), long(4), bool(1), string (255)
 - arrays : byte, long, bool
-- standart functions (random, strcopy, strcat, strlen) realesed by assembler
-- pointers in params fuctions and use as variable
+- built-in functions : random, strcopy, strcat, strlen; implemented in assembler
+- pointers as function params and variables
 - standart library errors
-- overflow check, can be disabled
+- overflow check; can be disabled
 
-## Example code 
+## Code example
 ```C# 
-long function sort(long x[], long size){
-long i = 0;
-long j = 0;
-long temp;
-repeat{
-	j = 0;
-		repeat{
-			if(x[j]>x[j+1])
-			{
-				temp = x[j+1];
-				x[j+1] = x[j];
-				x[j] = temp;
-			}
-			j++;
-		}until(j<8);
-	i++;
-}until(i<8);
-return 0;
+long function sort(long x[], long size) {
+    long i = 0;
+    long j = 0;
+    long temp;
+    
+    repeat {
+        j = 0;
+	
+        repeat {
+            if (x[j] > x[j + 1]) {
+                temp = x[j+1];
+                x[j+1] = x[j];
+                x[j] = temp;
+            }
+	    
+	    j++;
+        } until (j < 8);
+	
+        i++;
+    } until (i < 8);
+   
+    return 0;
 }
-long function maxx(long x[], long size){
-	long j;
-	long arrmax = 0;
-		repeat{
-			if(x[j]>arrmax)
-			{
-				arrmax = x[j];
-			}
-			j++;
-		}until(j<8);
-	return arrmax;
+
+long function findMax(long x[], long size) {
+    long j;
+    long arrmax = 0;
+    
+    repeat {
+        if(x[j] > arrmax) {
+            arrmax = x[j];
+        }
+        
+	j++;
+    } until(j < 8);
+	
+    return arrmax;
 }
-main
-{
-	string hello = 'hello';
-	long i = 0;
-	long j = 0;
-	long temp;
-	long $size = 1033;
-	long h[$size] = {10, 81, 1101
-	, 68, 98,11,12,12,45,45};
-	byte j[$size] = {40, 1, 18, 6, 9,11,42,72,4,15};
-	i = sort(h,$size);
-	temp = maxx(h, $size);
-	write('max element = ', temp);
-	i = 0;
-	repeat{
-	writeline(h[i]);
+
+main {
+    string hello = 'hello';
+    long i = 0;
+    long j = 0;
+    long temp;
+    long $size = 1033;
+    long h[$size] = { 10, 81, 1101, 68, 98, 11, 12, 12, 45, 45 };
+    byte j[$size] = { 40, 1, 18, 6, 9, 11, 42, 72, 4, 15 };
+    
+    i = sort(h,$size);
+    temp = findMax(h, $size);
+    write('max element = ', temp);
+    
+    i = 0;
+    repeat {
+        writeline(h[i]);
 	i++;
-	}until(i<9);
-	write();
-return 0;
+    } until(i < 9);
+    
+    write();
+    return 0;
 }
 ```
-## Compilier to assembler
+## Compiles to:
 ```Assembly
 ;--29-12-2020 --âòîðíèê-- 19:34:40 --
 ;-------------ASM-------------;
